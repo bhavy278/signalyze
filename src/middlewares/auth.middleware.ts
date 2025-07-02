@@ -1,5 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { IUser } from "../commons/interfaces/auth.interface";
+
+// Extend the Request type locally
+export interface AuthenticatedRequest extends Request {
+  user?: IUser | JwtPayload;
+}
+
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Get token from headers (Authorization header)
   const token = req.headers["authorization"]?.split(" ")[1].trim(); // Assuming the format "Bearer <token>"
@@ -18,6 +25,9 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
         );
       }
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Replace with your JWT secret key
+      if (decoded && typeof decoded === "object" && "_doc" in decoded) {
+        (req as AuthenticatedRequest).user = decoded["_doc"]; // Attach the decoded user information to the request object
+      }
 
       // Continue to the next middleware or route handler
       next();

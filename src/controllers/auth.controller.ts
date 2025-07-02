@@ -77,7 +77,7 @@ export const handleAuthSignIn = async (
           {
             email: req.body.email,
           },
-          { _id: 0, password: 0, createdAt: 0, __v: 0 }
+          { password: 0, createdAt: 0, __v: 0 }
         );
         if (user) {
           const token = await handleGenerateJsobWebToken(user);

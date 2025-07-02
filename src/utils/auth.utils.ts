@@ -1,7 +1,11 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user.model";
-import { IUser, IUserSignIn, IUserSignup } from "../commons/interfaces/auth.interface";
+import {
+  IUser,
+  IUserSignIn,
+  IUserSignup,
+} from "../commons/interfaces/auth.interface";
 
 // Encrypt password using bcrypt
 export const handlePasswordEncryption = async (password: string) => {
