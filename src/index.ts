@@ -7,6 +7,7 @@ import { connectDB } from "./config/db.config";
 import { APP_ROUTES, BASE_API_ENDPOINT } from "./enums/routes.enum";
 import documentsRoutes from "./routes/documents.route";
 import authRoutes from "./routes/auth.route";
+import authMiddleware from "./middlewares/auth.middleware";
 
 connectDB();
 
@@ -25,7 +26,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use(`${BASE_API_ENDPOINT}${APP_ROUTES.API_AUTH}`, authRoutes);
 
 // Document routes
-// app.use("/api/v1/documents", documentsRoutes);
+app.use("/api/v1/documents", authMiddleware, documentsRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);

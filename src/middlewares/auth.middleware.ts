@@ -5,28 +5,28 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers["authorization"]?.split(" ")[1].trim(); // Assuming the format "Bearer <token>"
 
   if (!token) {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
-      message: "No token provided, authorization denied",
+      message: "Unauthorized!",
     });
-  }
+  } else {
+    try {
+      // Verify the token using the secret key
+      if (!process.env.JWT_SECRET_KEY) {
+        throw new Error(
+          "JWT secret key is not defined in environment variables"
+        );
+      }
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Replace with your JWT secret key
 
-  try {
-    // Verify the token using the secret key
-    if (!process.env.JWT_SECRET_KEY) {
-      throw new Error("JWT secret key is not defined in environment variables");
+      // Continue to the next middleware or route handler
+      next();
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: "Invalid token, authorization denied",
+      });
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Replace with your JWT secret key
-
-    // Attach the user info (if needed) to the request object
-    // req.user = decoded;
-
-    // Continue to the next middleware or route handler
-    next();
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Invalid token, authorization denied" });
   }
 };
 export default authMiddleware;
