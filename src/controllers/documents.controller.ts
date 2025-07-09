@@ -4,6 +4,7 @@ import { IDocument } from "../commons/interfaces/document.interface";
 import { UserModel } from "../models/user.model";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import { attachDocumentToUser } from "../services/user.service";
+import { extractTextFromDocx } from "../services/document.service";
 
 export const handleFileUpload = async (
   req: Request,
@@ -42,4 +43,13 @@ export const handleFileUpload = async (
     success: true,
     data: doc,
   });
+};
+
+
+// working on text extraction from document
+const getTextFromDocument = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { docId } = req.params;
 };

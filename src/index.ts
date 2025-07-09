@@ -4,10 +4,11 @@ dotenv.config();
 import morgan from "morgan";
 import express, { Request, Response } from "express";
 import { connectDB } from "./config/db.config";
-import { APP_ROUTES, BASE_API_ENDPOINT } from "./enums/routes.enum";
+import { APP_ROUTES, BASE_API_ENDPOINT } from "./commons/enums/routes.enum";
 import documentsRoutes from "./routes/documents.route";
 import authRoutes from "./routes/auth.route";
 import authMiddleware from "./middlewares/auth.middleware";
+import aiRoutes from "./routes/ai.route";
 
 connectDB();
 
@@ -23,10 +24,14 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.use(`${BASE_API_ENDPOINT}${APP_ROUTES.API_AUTH}`, authRoutes);
+app.use(APP_ROUTES.API_AUTH, authRoutes);
 
 // Document routes
-app.use("/api/v1/documents", authMiddleware, documentsRoutes);
+app.use(APP_ROUTES.API_DOCUMENTS, authMiddleware, documentsRoutes);
+
+// AI routes
+app.use(APP_ROUTES.API_AI, authMiddleware, aiRoutes);
+// app.post(APP_ROUTES.API_AI, authMiddleware, aiRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);

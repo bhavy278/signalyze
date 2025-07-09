@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
-import { AUTH_ROUTES } from "../enums/routes.enum";
-import { handleAuthSignUp,handleAuthSignIn } from "../controllers/auth.controller";
+import { AUTH_ROUTES } from "../commons/enums/routes.enum";
+import {
+  handleAuthSignUp,
+  handleAuthSignIn,
+} from "../controllers/auth.controller";
 
 const router = express.Router();
 

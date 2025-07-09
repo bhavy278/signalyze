@@ -22,7 +22,13 @@ const fileFilter = (
   file: Express.Multer.File,
   cb: FileFilterCallback
 ) => {
-  const allowed = ["image/jpeg", "image/png", "application/pdf"];
+  const allowed = [
+    "image/jpeg",
+    "image/png",
+    "application/pdf",
+    "application/docx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+  ];
   if (allowed.includes(file.mimetype)) {
     cb(null, true);
   } else {
