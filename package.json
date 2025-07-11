@@ -1,0 +1,29 @@
+{
+  "name": "signalyze-backend",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "scripts": {
+    "dev": "nodemon src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhavy278/signalyze-backend.git"
+  },
+  "author": "Bhavy Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhavy278/signalyze-backend/issues"
+  },
+  "homepage": "https://github.com/bhavy278/signalyze-backend#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.13",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
