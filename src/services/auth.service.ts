@@ -5,6 +5,8 @@ import { RESULT_ENUM } from "../commons/constants/app.constants";
 import jwt from "jsonwebtoken";
 import { JWTInputType, JWTOutputType } from "../commons/types/auth.types";
 import { db } from "../config/db.config";
+import { AUTH_QUERIES } from "../commons/constants/query.constants";
+import { getQueryFromFile } from "./app.service";
 
 export const encryptPassword = async (password: string): Promise<string> => {
   const saltRounds = 11;
@@ -50,10 +52,7 @@ export const registerUser = async (
   role: string
 ): Promise<string> => {
   try {
-    const query = fs.readFileSync(
-      path.join(__dirname, "../sql/queries/auth/register_new_user_call.sql"),
-      "utf-8"
-    );
+    const query = getQueryFromFile(AUTH_QUERIES.REGISTER_NEW_USER);
 
     const [result] = await db.query(query, [name, email, password, role]);
 
@@ -71,10 +70,8 @@ export const registerUser = async (
 };
 
 export const findUserByEmail = async (email: string): Promise<any> => {
-  const query = fs.readFileSync(
-    path.join(__dirname, "../sql/queries/auth/find_user_by_email.sql"),
-    "utf-8"
-  );
+  const query = getQueryFromFile(AUTH_QUERIES.FIND_USER_BY_EMAIL);
+
   const [result]: any = await db.query(query, [email]);
   if (result.length === 0) return null;
   else return result[0];

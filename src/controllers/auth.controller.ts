@@ -14,6 +14,7 @@ export const register = async (
   res: Response
 ): Promise<Response> => {
   const { name, email, password, role } = _req.body;
+  
 
   if (!name || !email || !password || !role)
     return res.status(400).json({
