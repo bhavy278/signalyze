@@ -1,7 +1,7 @@
 import { RESULT_ENUM } from "../commons/constants/app.constants";
 import { USER_QUERIES } from "../commons/constants/query.constants";
 import { db } from "../config/db.config";
-import { getQueryFromFile } from "./app.service";
+import { getQueryFromFile } from "./app.services";
 
 export const getPasswordByEmail = async (email: string) => {
   const query = getQueryFromFile(USER_QUERIES.GET_PASSWORD_BY_EMAIL);

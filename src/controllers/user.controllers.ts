@@ -3,8 +3,8 @@ import { AuthenticatedRequest } from "../commons/types/express/global";
 import {
   getPasswordByEmail,
   updateUserPassword,
-} from "../services/user.service";
-import { comparePassword, encryptPassword } from "../services/auth.service";
+} from "../services/user.services";
+import { comparePassword, encryptPassword } from "../services/auth.services";
 import { RESULT_ENUM } from "../commons/constants/app.constants";
 
 export const getLoggedInUserEmail = async (

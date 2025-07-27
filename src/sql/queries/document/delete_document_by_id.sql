@@ -1,0 +1,1 @@
+DELETE FROM signalyze.documents WHERE documents.id = ? and documents.user_id = ?;

@@ -1,8 +1,10 @@
 // src/config/db.ts
-import mysql, { Connection } from "mysql2/promise";
 import dotenv from "dotenv";
 import fs from "fs";
+import mysql, { Connection } from "mysql2/promise";
 import path from "path";
+import { STORED_PROCEDURES } from "../commons/constants/query.constants";
+import { getQueryFromFile } from "../services/app.services";
 dotenv.config();
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
@@ -19,6 +21,8 @@ export async function connectToDatabase(): Promise<mysql.Pool> {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASSWORD,
+
+      multipleStatements: true,
     });
 
     // 1. Create DB
@@ -62,11 +66,12 @@ const createAllTables = async (connection: Connection) => {
 };
 
 const createStoredProcedures = async (db: mysql.Pool) => {
-  const registerUserQuery = fs.readFileSync(
-    path.join(__dirname, "../sql/procedures/sp_register_user.sql"),
-    "utf8"
-  );
+  const registerUserQuery = getQueryFromFile(STORED_PROCEDURES.REGISTER_USER);
+
   await db.query(registerUserQuery);
+
+  const saveDocumentQuery = getQueryFromFile(STORED_PROCEDURES.SAVE_DOCUMENT);
+  await db.query(saveDocumentQuery);
 
   console.log("✅ Stored procedures Registered successfully");
 };

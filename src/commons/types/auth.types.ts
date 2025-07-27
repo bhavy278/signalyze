@@ -7,6 +7,7 @@ export type User = {
 };
 
 export type JWTInputType = {
+  id: string;
   name: string;
   email: string;
   role: "admin" | "user";
@@ -18,4 +19,5 @@ export type DecodedUserType = {
   name: string;
   email: string;
   role: "admin" | "user";
+  id: string;
 };

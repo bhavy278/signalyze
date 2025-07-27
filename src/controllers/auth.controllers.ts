@@ -5,7 +5,7 @@ import {
   findUserByEmail,
   generateJWT,
   registerUser,
-} from "../services/auth.service";
+} from "../services/auth.services";
 import { RESULT_ENUM } from "../commons/constants/app.constants";
 import { User } from "../commons/types/auth.types";
 
@@ -14,7 +14,6 @@ export const register = async (
   res: Response
 ): Promise<Response> => {
   const { name, email, password, role } = _req.body;
-  
 
   if (!name || !email || !password || !role)
     return res.status(400).json({
@@ -72,12 +71,13 @@ export const login = async (
     });
   } else if (user.email && user.password) {
     const isPasswordCorrect = await comparePassword(password, user.password);
-
+    
     if (isPasswordCorrect) {
       const jwt = await generateJWT({
         name: user.name,
         email: user.email,
         role: user.role,
+        id: user.id,
       });
       return res.status(200).json({
         message: "Login successful",

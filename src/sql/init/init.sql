@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS signalyze.users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -6,4 +5,17 @@ CREATE TABLE IF NOT EXISTS signalyze.users (
   password VARCHAR(255) NOT NULL,
   role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS signalyze.documents (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  filename VARCHAR(255) NOT NULL,
+  original_filename VARCHAR(255) NOT NULL,
+  filepath VARCHAR(512) NOT NULL,
+  size INT NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  uploaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  FOREIGN KEY (user_id) REFERENCES signalyze.users(id) ON DELETE CASCADE
 );

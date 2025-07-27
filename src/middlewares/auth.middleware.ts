@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { verifyJWT } from "../services/auth.service";
+import { verifyJWT } from "../services/auth.services";
 import { DecodedUserType } from "../commons/types/auth.types";
 import { AuthenticatedRequest } from "../commons/types/express/global";
 
@@ -28,6 +28,7 @@ export const authMiddleware = async (
     email: decoded?.email,
     name: decoded?.name,
     role: decoded?.role,
+    id: decoded?.id,
   };
 
   next();
