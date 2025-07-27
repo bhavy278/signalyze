@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { JWTInputType, JWTOutputType } from "../commons/types/auth.types";
 import { db } from "../config/db.config";
 import { AUTH_QUERIES } from "../commons/constants/query.constants";
-import { getQueryFromFile } from "./app.service";
+import { getQueryFromFile } from "./app.services";
 
 export const encryptPassword = async (password: string): Promise<string> => {
   const saltRounds = 11;

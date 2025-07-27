@@ -11,6 +11,7 @@ import { authMiddleware } from "./middlewares/auth.middleware";
 import { adminOnly } from "./middlewares/role.middleware";
 import AuthRoutes from "./routes/auth.routes";
 import UserRoutes from "./routes/user.routes";
+import DocumentRoutes from "./routes/document.routes";
 
 const app: Application = express();
 const PORT = 5001;
@@ -28,6 +29,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/user", authMiddleware, UserRoutes);
+app.use("/api/v1/documents", authMiddleware, DocumentRoutes);
 
 app.get(
   "/api/v1/home",

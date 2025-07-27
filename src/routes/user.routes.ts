@@ -3,7 +3,7 @@ import {
   getLoggedInUserEmail,
   getLoggedInUserInfo,
   updatePassword,
-} from "../controllers/user.controller";
+} from "../controllers/user.controllers";
 
 const router = express.Router();
 
