@@ -22,6 +22,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/json-diff": "^1.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.0.0",
@@ -30,14 +31,22 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/pdf-parse": "^1.1.5",
+    "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "gpt-3-encoder": "^1.1.4",
+    "json-diff": "^1.0.6",
     "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.9.1",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
     "mysql2": "^3.14.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "openai": "^5.11.0",
+    "pdf-parse": "^1.1.1"
   }
 }

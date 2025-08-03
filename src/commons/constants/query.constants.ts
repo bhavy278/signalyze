@@ -21,4 +21,5 @@ export const DOCUMENT_QUERIES = {
 export const STORED_PROCEDURES = {
   REGISTER_USER: "../sql/procedures/sp_register_user.sql",
   SAVE_DOCUMENT: "../sql/procedures/sp_save_new_document.sql",
+  SAVE_ANALYSIS: "../sql/procedures/sp_save_analysis.sql",
 };
