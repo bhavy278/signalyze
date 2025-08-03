@@ -19,3 +19,13 @@ CREATE TABLE IF NOT EXISTS signalyze.documents (
   deleted BOOLEAN NOT NULL DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES signalyze.users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS signalyze.analysis (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  document_id INT NOT NULL,
+  version INT NOT NULL,
+  analysis_json JSON NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (document_id) REFERENCES signalyze.documents(id) ON DELETE CASCADE,
+  UNIQUE KEY (document_id, version)
+);

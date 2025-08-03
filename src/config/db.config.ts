@@ -67,11 +67,12 @@ const createAllTables = async (connection: Connection) => {
 
 const createStoredProcedures = async (db: mysql.Pool) => {
   const registerUserQuery = getQueryFromFile(STORED_PROCEDURES.REGISTER_USER);
-
   await db.query(registerUserQuery);
 
   const saveDocumentQuery = getQueryFromFile(STORED_PROCEDURES.SAVE_DOCUMENT);
   await db.query(saveDocumentQuery);
+  const saveAnalysisQuery = getQueryFromFile(STORED_PROCEDURES.SAVE_ANALYSIS);
+  await db.query(saveAnalysisQuery);
 
   console.log("✅ Stored procedures Registered successfully");
 };
