@@ -1,6 +1,6 @@
 import { CorsOptions } from "cors";
 export const CORS_OPTIONS: CorsOptions = {
-  origin: ["http://localhost:3000", "https://your-frontend.com"],
+  origin: ["http://localhost:3000", "http://localhost:3000"],
   credentials: true,
 };
 

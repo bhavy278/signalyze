@@ -22,8 +22,11 @@ export const uploadDocument = async (
 ) => {
   const file = _req.file;
 
+  console.log("file", file);
   if (!file) {
-    return res.status(400).json({ message: "No file uploaded" });
+    return res
+      .status(400)
+      .json({ message: "No file uploaded", success: false });
   }
   const userId = _req.user?.id;
 
@@ -31,26 +34,28 @@ export const uploadDocument = async (
   const relativeFilePath = path.join("/uploads", file.filename);
   const documentInfo: SaveDocumentType = {
     user_id: userId,
-    filename: file.filename, // Saved/generated name
-    original_filename: file.originalname, // User's uploaded name
+    filename: file.filename,
+    original_filename: file.originalname,
     filepath: relativeFilePath,
-    size: file.size, // Size in bytes
-    type: file.mimetype, // MIME type
+    size: file.size,
+    type: file.mimetype,
     uploaded_at: new Date(),
     deleted: false,
   };
-  const result: string = await saveDocument(documentInfo);
-  if (result === RESULT_ENUM.FAILED)
-    return res.status(500).json({
-      message: "Internal Server Error. Try Again Later.",
-    });
+  const result: any = await saveDocument(documentInfo);
 
-  return res.status(201).json({
-    message: "Document uploaded successfully",
-    data: {
-      ...documentInfo,
-    },
-  });
+  if (result.status === RESULT_ENUM.FAILED || !result.document) {
+    return res.status(500).json({
+      message: "Internal Server Error. Could not save document.",
+      success: false,
+    });
+  } else {
+    return res.status(201).json({
+      message: "Document uploaded successfully",
+      success: true,
+      data: result.document,
+    });
+  }
 };
 
 export const getAllDocumentsByUser = async (
@@ -62,6 +67,7 @@ export const getAllDocumentsByUser = async (
   );
   return res.status(200).json({
     message: "Documents found",
+    success: true,
     data: documents,
   });
 };
@@ -76,11 +82,13 @@ export const getDocumentById = async (
   );
   if (result.status === RESULT_ENUM.DOCUMENTS_FOUND)
     return res.status(200).json({
+      success: true,
       message: `Document found with id: ${_req.params.documentId}`,
       data: result.docs,
     });
   else
     return res.status(200).json({
+      success: true,
       message: `No document found with id: ${_req.params.documentId}`,
       data: result.docs,
     });
@@ -98,6 +106,7 @@ export const deleteDocumentById = async (
   );
   if (result.status === RESULT_ENUM.DOCUMENTS_NOT_FOUND)
     return res.status(200).json({
+      success: true,
       message: `No document found with id: ${documentId}`,
       data: result.docs,
     });
@@ -105,10 +114,12 @@ export const deleteDocumentById = async (
     const isDeleted = await handleDeleteDocument(documentId, userId);
     if (isDeleted === RESULT_ENUM.SUCCESS)
       return res.status(200).json({
+        success: true,
         message: `Deleted a document with id: ${documentId}`,
       });
     else
       return res.status(200).json({
+        success: true,
         message: `Failed to delete a document with id: ${documentId}`,
       });
   }

@@ -1,3 +1,4 @@
+
 DROP PROCEDURE IF EXISTS SaveDocument;
 CREATE PROCEDURE SaveDocument (
   IN p_user_id INT,
@@ -9,6 +10,7 @@ CREATE PROCEDURE SaveDocument (
   IN p_uploaded_at DATETIME,
   IN p_deleted BOOLEAN
 )
+BEGIN
   INSERT INTO
   signalyze.documents (
     user_id,
@@ -30,4 +32,6 @@ CREATE PROCEDURE SaveDocument (
       p_type,
       p_uploaded_at,
       p_deleted
-    )
+    );
+    SELECT * FROM signalyze.documents WHERE id = LAST_INSERT_ID();
+    END;

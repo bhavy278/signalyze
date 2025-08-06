@@ -32,22 +32,27 @@ export const register = async (
   if (status === RESULT_ENUM.FAILED) {
     return res.status(500).json({
       error: "Failed to register user. Please try again later.",
+      success: false,
     });
   } else if (status === RESULT_ENUM.SUCCESS) {
     return res.status(201).json({
       message: "User registered successfully. Please log in.",
+      success: true,
     });
   } else if (status === RESULT_ENUM.EMAIL_EXISTS) {
     return res.status(409).json({
       error: "Email already exists. Please use a different email.",
+      success: false,
     });
   } else if (status === RESULT_ENUM.SERVER_ERROR) {
     return res.status(500).json({
       error: "Internal server error. Please try again later.",
+      success: false,
     });
   } else {
     return res.status(500).json({
       error: "Unexpected error occurred. Please Try again later.",
+      success: false,
     });
   }
 };
@@ -68,10 +73,11 @@ export const login = async (
   if (user === null) {
     return res.status(404).json({
       error: "Email not found. Please register first.",
+      success: false,
     });
   } else if (user.email && user.password) {
     const isPasswordCorrect = await comparePassword(password, user.password);
-    
+
     if (isPasswordCorrect) {
       const jwt = await generateJWT({
         name: user.name,
@@ -81,6 +87,7 @@ export const login = async (
       });
       return res.status(200).json({
         message: "Login successful",
+        success: true,
         user: {
           name: user.name,
           email: user.email,
@@ -91,9 +98,13 @@ export const login = async (
     } else {
       return res.status(401).json({
         error: "Incorrect password. Please try again.",
+        success: false,
       });
     }
   }
 
-  return res.status(501).json({});
+  return res.status(501).json({
+    success: false,
+    error: "Unexpected error occurred. Please try again later.",
+  });
 };
