@@ -14,7 +14,7 @@ export const analyzeDocumentById = async (
   try {
     const id = parseInt(_req.params.id);
     const analysis = await getDocumentByIdAndAnalyze(id);
-    res.json({ success: true, analysis });
+    res.status(200).json({ success: true, analysis });
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });

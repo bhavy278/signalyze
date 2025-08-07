@@ -7,6 +7,9 @@ import {
 import { db } from "../config/db.config";
 import { getQueryFromFile } from "./app.services";
 import { RESULT_ENUM } from "../commons/constants/app.constants";
+import path from "path";
+import fs from "fs";
+import { execFile } from "child_process";
 
 export const saveDocument = async (document: SaveDocumentType) => {
   const query = await getQueryFromFile(DOCUMENT_QUERIES.SAVE_DOCUMENT);
@@ -75,4 +78,44 @@ export const handleDeleteDocument = async (
   const [rows]: any = await db.query(query, [documentId, userId]);
   if (rows.affectedRows > 0) return RESULT_ENUM.SUCCESS;
   else return RESULT_ENUM.FAILED;
+};
+
+/**
+ * Converts a DOCX file to a PDF using the LibreOffice command-line interface.
+ * @param docxPath The absolute path to the source .docx file.
+ * @param outputDir The directory to save the converted .pdf file.
+ * @returns A promise that resolves with the absolute path to the newly created .pdf file.
+ */
+export const convertDocxToPdf = (
+  docxPath: string,
+  outputDir: string
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    // The command arguments for LibreOffice
+    const args = [
+      "--headless", // Run without a GUI
+      "--convert-to",
+      "pdf", // The target format
+      "--outdir",
+      outputDir, // The directory to save the PDF
+      docxPath, // The source file
+    ];
+
+    // Use 'soffice' command, which is the executable for LibreOffice
+    execFile("soffice", args, (error, stdout, stderr) => {
+      if (error) {
+        console.error("LibreOffice conversion error:", stderr);
+        return reject(new Error("Failed to convert document to PDF."));
+      }
+
+      const pdfFilename = `${path.basename(docxPath, ".docx")}.pdf`;
+      const pdfPath = path.join(outputDir, pdfFilename);
+
+      if (fs.existsSync(pdfPath)) {
+        resolve(pdfPath);
+      } else {
+        reject(new Error("Converted PDF file not found."));
+      }
+    });
+  });
 };

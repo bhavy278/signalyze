@@ -67,7 +67,9 @@ export const handleGetAnalysisByVersion = async (
 
   // The database stores the JSON as a string, so we need to parse it
   // before sending it back to the controller.
-  analysis.analysis_json = JSON.parse(analysis.analysis_json);
+  if (typeof analysis.analysis_json === "string") {
+    analysis.analysis_json = JSON.parse(analysis.analysis_json);
+  }
 
   return analysis;
 };

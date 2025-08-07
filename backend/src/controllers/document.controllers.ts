@@ -1,4 +1,5 @@
 import { Response } from "express";
+import fs from "fs";
 import path from "path";
 import { AuthenticatedRequest } from "../commons/types/express/global";
 import {
@@ -7,6 +8,7 @@ import {
   UserDocumentType,
 } from "../commons/types/document.types";
 import {
+  convertDocxToPdf,
   handleDeleteDocument,
   handleGetAllDocumentsByUser,
   handleGetSingleDocumentById,
@@ -15,6 +17,7 @@ import {
 import { getQueryFromFile } from "../services/app.services";
 import { DOCUMENT_QUERIES } from "../commons/constants/query.constants";
 import { RESULT_ENUM } from "../commons/constants/app.constants";
+import { db } from "../config/db.config";
 
 export const uploadDocument = async (
   _req: AuthenticatedRequest,
@@ -122,5 +125,53 @@ export const deleteDocumentById = async (
         success: true,
         message: `Failed to delete a document with id: ${documentId}`,
       });
+  }
+};
+
+export const previewDocument = async (
+  _req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const { documentId } = _req.params;
+    const userId = _req.user?.id;
+
+    const [[document]]: any = await db.query(
+      "SELECT * FROM documents WHERE id = ? AND user_id = ?",
+      [documentId, userId]
+    );
+
+    if (!document) {
+      return res.status(404).send("Document not found or access denied.");
+    }
+
+    const uploadsDir = path.join(__dirname, "../../uploads");
+    const originalFilePath = path.join(uploadsDir, document.filename);
+
+    if (!fs.existsSync(originalFilePath)) {
+      return res.status(404).send("Original file not found on server.");
+    }
+
+    // If the file is already a PDF or an image, send it directly.
+    if (
+      document.type === "application/pdf" ||
+      document.type.startsWith("image/")
+    ) {
+      return res.sendFile(originalFilePath);
+    }
+
+    // If it's a DOCX, convert it to PDF and then send the PDF.
+    if (
+      document.type ===
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ) {
+      const pdfPath = await convertDocxToPdf(originalFilePath, uploadsDir);
+      return res.sendFile(pdfPath);
+    }
+
+    res.status(400).send("File type cannot be previewed.");
+  } catch (error) {
+    console.error("Error during document preview:", error);
+    res.status(500).send("Server error while generating preview.");
   }
 };
