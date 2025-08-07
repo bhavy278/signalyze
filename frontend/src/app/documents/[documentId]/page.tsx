@@ -1,25 +1,25 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useParams } from "next/navigation";
-import dynamic from "next/dynamic";
-import { Document, Analysis, AnalysisVersion } from "@/types/document.types";
-import { getDocumentById } from "@/services/document.service";
-import {
-  analyzeDocument,
-  getAnalysisVersions,
-  getAnalysisByVersion,
-} from "@/services/analysis.service";
-import { useToast } from "@/context/ToastContext";
+import { AnalysisViewer } from "@/app/components/AnalysisViewer/AnalysisViewer";
 import { Button } from "@/app/components/ui/Button";
 import { Select } from "@/app/components/ui/Select";
+import { useToast } from "@/context/ToastContext";
+import {
+  analyzeDocument,
+  getAnalysisByVersion,
+  getAnalysisVersions,
+} from "@/services/analysis.service";
+import { getDocumentById } from "@/services/document.service";
+import { Analysis, AnalysisVersion, Document } from "@/types/document.types";
 import { SelectOption } from "@/types/ui.types";
 import { Loader2 } from "lucide-react";
-import { AnalysisViewer } from "@/app/components/AnalysisViewer/page";
+import dynamic from "next/dynamic";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 const DocumentPreviewer = dynamic(
   () =>
-    import("@/app/components/DocumentPreviewer/page").then(
+    import("@/app/components/DocumentPreviewer/DocumentPreviewer").then(
       (mod) => mod.DocumentPreviewer
     ),
   {
@@ -32,6 +32,7 @@ const DocumentPreviewer = dynamic(
     ),
   }
 );
+
 export default function DocumentDetailPage() {
   const params = useParams();
   const documentId = params.documentId as string;
@@ -55,12 +56,20 @@ export default function DocumentDetailPage() {
         if (response.success) {
           setSelectedAnalysis(response.analysis);
         }
-      } catch (error: any) {
-        addToast({
-          message: error.message,
-          severity: "error",
-          position: "top-right",
-        });
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          addToast({
+            message: error.message,
+            severity: "error",
+            position: "top-right",
+          });
+        } else {
+          addToast({
+            message: "An unknown error occurred.",
+            severity: "error",
+            position: "top-right",
+          });
+        }
       }
     },
     [documentId, addToast]
@@ -94,12 +103,20 @@ export default function DocumentDetailPage() {
             await fetchAnalysisForVersion(latestVersion);
           }
         }
-      } catch (error: any) {
-        addToast({
-          message: error.message,
-          severity: "error",
-          position: "top-right",
-        });
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          addToast({
+            message: error.message,
+            severity: "error",
+            position: "top-right",
+          });
+        } else {
+          addToast({
+            message: "An unknown error occurred.",
+            severity: "error",
+            position: "top-right",
+          });
+        }
         setDocument(null);
       } finally {
         setIsLoading(false);
@@ -125,12 +142,20 @@ export default function DocumentDetailPage() {
         setSelectedVersion(newLatestVersion.toString());
         await fetchAnalysisForVersion(newLatestVersion);
       }
-    } catch (error: any) {
-      addToast({
-        message: error.message,
-        severity: "error",
-        position: "top-right",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        addToast({
+          message: error.message,
+          severity: "error",
+          position: "top-right",
+        });
+      } else {
+        addToast({
+          message: "An unknown error occurred.",
+          severity: "error",
+          position: "top-right",
+        });
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -209,7 +234,7 @@ export default function DocumentDetailPage() {
             <div className="text-center text-gray-500 pt-20">
               <h3 className="text-xl font-semibold">No Analysis Available</h3>
               <p className="mt-2">
-                Click "Re-Analyze" to generate the first version.
+                Click &quot;Re-Analyze&quot; to generate the first version.
               </p>
             </div>
           )}

@@ -1,15 +1,14 @@
 "use client";
 
-import React, {
+import { getToken, removeToken, setToken } from "@/lib/token";
+import { useRouter } from "next/navigation";
+import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useState,
 } from "react";
-import { useRouter } from "next/navigation";
-import { getToken, setToken, removeToken } from "@/lib/token";
 import { useToast } from "./ToastContext";
 
 interface AuthContextType {

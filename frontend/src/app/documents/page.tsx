@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { FileText, Trash2, Eye, PlusCircle } from "lucide-react";
 import {
@@ -15,45 +15,59 @@ export default function MyDocumentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { addToast } = useToast();
 
-  const fetchDocuments = async () => {
+  const fetchDocuments = useCallback(async () => {
     try {
       const response = await getAllDocuments();
       if (response.success) {
         setDocuments(response.data);
       }
-    } catch (error: any) {
-      addToast({
-        message: error.message || "Failed to fetch documents.",
-        severity: "error",
-        position: "top-right",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        addToast({
+          message: error.message || "Failed to fetch documents.",
+          severity: "error",
+          position: "top-right",
+        });
+      } else {
+        addToast({
+          message: "Failed to fetch documents.",
+          severity: "error",
+          position: "top-right",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [addToast]);
 
   useEffect(() => {
     fetchDocuments();
-  }, []);
+  }, [fetchDocuments]);
 
   const handleDelete = async (documentId: string) => {
-    if (
-      confirm(
-        "Are you sure you want to delete this document? This action cannot be undone."
-      )
-    ) {
-      try {
-        await deleteDocumentById(documentId);
-        addToast({
-          message: "Document deleted successfully.",
-          severity: "success",
-          position: "top-right",
-        });
+    const confirmed = confirm(
+      "Are you sure you want to delete this document? This action cannot be undone."
+    );
+    if (!confirmed) return;
 
-        fetchDocuments();
-      } catch (error: any) {
+    try {
+      await deleteDocumentById(documentId);
+      addToast({
+        message: "Document deleted successfully.",
+        severity: "success",
+        position: "top-right",
+      });
+      fetchDocuments();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
         addToast({
           message: error.message,
+          severity: "error",
+          position: "top-right",
+        });
+      } else {
+        addToast({
+          message: "Failed to delete the document.",
           severity: "error",
           position: "top-right",
         });
@@ -123,7 +137,7 @@ export default function MyDocumentsPage() {
             No Documents Found
           </h2>
           <p className="text-gray-500 mt-2">
-            You haven't uploaded any documents yet.
+            You haven&apos;t uploaded any documents yet.
           </p>
           <Link href="/">
             <button className="mt-6 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">

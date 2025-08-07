@@ -1,5 +1,3 @@
-import { createContext } from "react";
-
 export interface Toast {
   id: number;
   message: string;

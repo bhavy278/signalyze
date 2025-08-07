@@ -1,14 +1,14 @@
 "use client";
 
+import { useToast } from "@/context/ToastContext";
+import { getToken } from "@/lib/token";
+import { registerUser } from "@/services/auth.service";
 import { AuthResponseType, RegisterUserType } from "@/types/auth.types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/context/ToastContext";
-import { loginUser, registerUser } from "@/services/auth.service";
-import { getToken } from "@/lib/token";
 
 const Register = () => {
   const [formData, setFormData] = useState<RegisterUserType>({
@@ -74,7 +74,7 @@ const Register = () => {
     if (token) {
       router.push("/");
     }
-  }, []);
+  }, [router]);
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-light-200 p-10 rounded-xl shadow-md">

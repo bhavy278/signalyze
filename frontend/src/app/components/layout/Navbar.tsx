@@ -2,8 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import React from "react";
+import { usePathname } from "next/navigation";
 import { Button } from "../ui/Button";
 
 const navLinks = [
@@ -15,7 +14,6 @@ const navLinks = [
 
 const Navbar = () => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const { isAuthenticated, logout } = useAuth();
 

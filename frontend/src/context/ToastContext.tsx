@@ -15,12 +15,13 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const removeToast = useCallback((id: number) => {
-    setToasts(toasts.filter((toast) => toast.id !== id));
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
   }, []);
+
   const addToast = useCallback(
     (toast: Omit<Toast, "id">) => {
       const id = toastId++;
-      setToasts((currentToasts) => [...currentToasts, { ...toast, id }]);
+      setToasts((prevToasts) => [...prevToasts, { ...toast, id }]);
       setTimeout(() => {
         removeToast(id);
       }, 3000);

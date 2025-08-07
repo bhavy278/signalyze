@@ -6,7 +6,7 @@ export default function ContactPage() {
       <div className="max-w-2xl mx-auto text-center">
         <h1 className="text-4xl font-bold text-gray-900">Get In Touch</h1>
         <p className="mt-4 text-lg text-gray-600">
-          Have questions, feedback, or need support? We'd love to hear from you.
+          Have questions, feedback, or need support? We&apos;d love to hear from you.
         </p>
       </div>
       <div className="mt-16 max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">

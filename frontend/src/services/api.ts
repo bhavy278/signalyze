@@ -1,7 +1,8 @@
 import { getToken } from "@/lib/token";
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-const API_URL: any = "http://localhost:5001/api/v1";
+// Use proper type instead of 'any'
+const API_URL = "https://signalyze-backend.onrender.com/api/v1";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -17,6 +18,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => {

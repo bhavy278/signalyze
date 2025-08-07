@@ -16,17 +16,17 @@ export default function AboutPage() {
             </h2>
             <p className="mt-4 text-gray-600">
               Legal documents are often dense, confusing, and filled with
-              jargon. Whether it's a rental lease, a new job contract, or the
-              terms of service for a new app, most people sign without fully
-              understanding what they're agreeing to. This information imbalance
-              can lead to hidden costs, unexpected obligations, and significant
-              risks.
+              jargon. Whether it&apos;s a rental lease, a new job contract, or
+              the terms of service for a new app, most people sign without fully
+              understanding what they&apos;re agreeing to. This information
+              imbalance can lead to hidden costs, unexpected obligations, and
+              significant risks.
             </p>
             <p className="mt-4 text-gray-600">
               Signalyze was born from the idea that understanding these
-              documents shouldn't require a law degree. We leverage the power of
-              advanced AI to act as your personal legal assistant, breaking down
-              complex text into simple, actionable insights.
+              documents shouldn&apos;t require a law degree. We leverage the
+              power of advanced AI to act as your personal legal assistant,
+              breaking down complex text into simple, actionable insights.
             </p>
           </div>
           <div className="bg-gray-100 p-8 rounded-lg">

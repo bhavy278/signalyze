@@ -1,20 +1,16 @@
 "use client";
 
-import { loginUser, registerUser } from "@/services/auth.service";
+import { useToast } from "@/context/ToastContext";
+import { getToken } from "@/lib/token";
+import { loginUser } from "@/services/auth.service";
+import { AuthResponseType, LoginUserType } from "@/types/auth.types";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import {
-  AuthResponseType,
-  LoginUserType,
-  RegisterUserType,
-} from "@/types/auth.types";
-import { useRouter } from "next/navigation";
-import { getToken } from "@/lib/token";
-import { useToast } from "@/context/ToastContext";
 
-const LoginPage = () => {
+const Login = () => {
   const [formData, setFormData] = useState<LoginUserType>({
     email: "",
     password: "",
@@ -30,6 +26,7 @@ const LoginPage = () => {
       alert("Please fix the errors before submitting.");
       return;
     }
+
     const response: AuthResponseType = await loginUser(formData);
 
     if (response.success) {
@@ -73,7 +70,8 @@ const LoginPage = () => {
     if (token) {
       router.push("/");
     }
-  }, []);
+  }, [router]); // ✅ Added router to dependencies
+
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-light-200 p-10 rounded-xl shadow-md">
@@ -131,7 +129,7 @@ const LoginPage = () => {
           </div>
         </form>
         <div className="text-center text-sm text-gray-500">
-          Don't have an account?{" "}
+          Don&rsquo;t have an account?{" "}
           <Link
             href="/auth?type=register"
             className="font-medium text-blue-600 hover:text-blue-500"
@@ -144,4 +142,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

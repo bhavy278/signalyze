@@ -1,16 +1,9 @@
 "use client";
 
 import { Select } from "@/app/components/ui/Select";
-import { useToast } from "@/context/ToastContext";
 import { SelectOption } from "@/types/ui.types";
-import { useParams } from "next/navigation";
 
 export default function DocumentDetailPage() {
-  const params = useParams();
-  const documentId = params.documentId as string;
-
-  const { addToast } = useToast();
-
   const analysisVersions: SelectOption[] = [
     { value: 3, label: "Version 3 (Latest)" },
     { value: 2, label: "Version 2" },
@@ -43,7 +36,7 @@ export default function DocumentDetailPage() {
             <p>Version Selector</p>
             <Select
               options={analysisVersions}
-              //   value={selectedValue}
+              // value={selectedValue}
               onSelect={handleSelectChange}
               placeholder="Choose a version..."
             />
@@ -56,13 +49,16 @@ export default function DocumentDetailPage() {
                 Analysis Details (Version: Version number)
               </h3>
               <pre className="mt-4 bg-gray-100 p-4 rounded-md text-sm whitespace-pre-wrap">
-                <h1>Analysis Preview</h1>
+                {/* Use &quot; to escape double quotes */}
+                <h1>Analysis Preview with &quot;quotes&quot; fixed</h1>
               </pre>
             </div>
           ) : (
             <div className="text-center text-gray-500 pt-20">
               <p>No analysis has been run for this document yet.</p>
-              <p className="mt-2">Click "Analyze Document" to get started.</p>
+              <p className="mt-2">
+                Click &quot;Analyze Document&quot; to get started.
+              </p>
             </div>
           )}
         </div>

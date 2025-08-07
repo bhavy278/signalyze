@@ -29,11 +29,7 @@ export default function HomePage() {
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     setUploadedDocumentId(null);
-    if (file) {
-      setPageState("file_selected");
-    } else {
-      setPageState("initial");
-    }
+    setPageState(file ? "file_selected" : "initial");
   };
 
   const handleUpload = async () => {
@@ -52,9 +48,13 @@ export default function HomePage() {
         setUploadedDocumentId(response.data.id);
         setPageState("uploaded");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Upload failed. Please try again.";
       addToast({
-        message: error.message || "Upload failed. Please try again.",
+        message,
         severity: "error",
         position: "top-right",
       });
@@ -75,12 +75,15 @@ export default function HomePage() {
           severity: "success",
           position: "top-right",
         });
-
         router.push(`/documents/${uploadedDocumentId}/`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Analysis failed. Please try again.";
       addToast({
-        message: error.message || "Analysis failed. Please try again.",
+        message,
         severity: "error",
         position: "top-right",
       });

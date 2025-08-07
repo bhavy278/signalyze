@@ -1,5 +1,4 @@
 import { Toast, ToastContainerProps } from "@/types/toast.types";
-import { Key } from "react";
 import ToastMessage from "./ToastMessage";
 
 const ToastContainer = ({ toasts, removeToast }: ToastContainerProps) => {
