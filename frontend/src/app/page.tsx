@@ -9,7 +9,6 @@ import { uploadDocument } from "@/services/document.service";
 import { analyzeDocument } from "@/services/analysis.service";
 import { Loader2 } from "lucide-react";
 
-// Defines the possible states of the page to manage the UI flow
 type PageState =
   | "initial"
   | "file_selected"
@@ -29,7 +28,7 @@ export default function HomePage() {
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
-    setUploadedDocumentId(null); // Reset previous upload if a new file is selected
+    setUploadedDocumentId(null);
     if (file) {
       setPageState("file_selected");
     } else {
@@ -51,7 +50,7 @@ export default function HomePage() {
           position: "top-right",
         });
         setUploadedDocumentId(response.data.id);
-        setPageState("uploaded"); // Transition to the next step
+        setPageState("uploaded");
       }
     } catch (error: any) {
       addToast({
@@ -59,7 +58,7 @@ export default function HomePage() {
         severity: "error",
         position: "top-right",
       });
-      setPageState("file_selected"); // Revert to previous state on failure
+      setPageState("file_selected");
     }
   };
 
@@ -76,7 +75,7 @@ export default function HomePage() {
           severity: "success",
           position: "top-right",
         });
-        // Redirect to the main document page after analysis
+
         router.push(`/documents/${uploadedDocumentId}/`);
       }
     } catch (error: any) {
@@ -85,11 +84,10 @@ export default function HomePage() {
         severity: "error",
         position: "top-right",
       });
-      setPageState("uploaded"); // Revert to previous state on failure
+      setPageState("uploaded");
     }
   };
 
-  // Renders the correct button based on the current page state
   const renderButton = () => {
     switch (pageState) {
       case "initial":
@@ -142,7 +140,6 @@ export default function HomePage() {
           <StyledFileUpload
             onFileSelect={handleFileSelect}
             acceptedFileTypes=".pdf,.docx,.txt"
-            // Disable the file upload area during processing states
             disabled={
               pageState === "uploading" ||
               pageState === "uploaded" ||

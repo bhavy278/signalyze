@@ -37,37 +37,26 @@ interface AnalysisData {
   major_restrictions_on_user: string[];
 }
 
-/**
- * Represents a single, complete analysis record from the database.
- */
 interface Analysis {
   id: number;
   document_id: number;
   version: number;
   analysis_json: AnalysisData;
-  created_at: string; // ISO date string
+  created_at: string;
 }
 
-/**
- * Represents the entire API response for a single document analysis.
- */
 export interface SingleAnalysisResponse {
   success: boolean;
   analysis: Analysis[];
 }
 
-
-
 export interface AnalysisVersion {
   id: number;
   document_id: number;
   version: number;
-  created_at: string; // ISO date string
+  created_at: string;
 }
 
-/**
- * Represents the entire API response when fetching all analysis versions for a document.
- */
 export interface AllAnalysesResponse {
   success: boolean;
   analysis: AnalysisVersion[];

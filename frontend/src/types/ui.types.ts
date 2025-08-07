@@ -3,7 +3,6 @@ export interface SelectOption {
   label: string;
 }
 
-// Define the props for the Select component
 export interface SelectProps {
   options: SelectOption[];
   onSelect: (value: string | number) => void;

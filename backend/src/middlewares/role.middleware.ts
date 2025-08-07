@@ -1,4 +1,3 @@
-// src/middlewares/role.middleware.ts
 import { Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../commons/types/express/global";
 

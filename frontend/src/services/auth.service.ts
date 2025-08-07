@@ -28,7 +28,6 @@ export const loginUser = async (
 ): Promise<AuthResponseType> => {
   try {
     const response = await api.post<AuthResponseType>("/auth/login", userData);
-    // If the request is successful, store the token
 
     if (response.data.user) {
       console.log(response.data.user.token);
@@ -37,7 +36,6 @@ export const loginUser = async (
 
     return response.data;
   } catch (error: any) {
-    // Re-throw the error to be handled by the calling component
     throw new Error(error.response?.data?.msg || "Invalid credentials");
   }
 };

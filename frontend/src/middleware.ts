@@ -20,10 +20,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// export const config = {
-//   matcher: ["/:path*", "/contact", "/documents/:path*", "/auth/:path*"],
-// };
-
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

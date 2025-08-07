@@ -1,18 +1,9 @@
-// File: services/openai.services.ts
-
 import OpenAI from "openai";
 
-// Initialize the OpenAI client. It will automatically read the
-// OPENAI_API_KEY from your .env file.
 const openai = new OpenAI({
   apiKey: process.env.OPEN_AI_KEY,
 });
 
-/**
- * Constructs the detailed prompt for the AI model to analyze a legal/contractual document.
- * @param documentText The full text content of the document.
- * @returns The fully constructed prompt string.
- */
 const getAnalysisPrompt = (documentText: string): string => {
   return `
     Your task is to act as an expert legal analyst. Meticulously analyze the following document text, which could be a lease, a contract, or a terms of service agreement. Your goal is to extract all critical information and present it in a structured format.
@@ -77,11 +68,7 @@ const getAnalysisPrompt = (documentText: string): string => {
     ---
   `;
 };
-/**
- * Analyzes document text using the gpt-4.1-nano model.
- * @param documentText The plain text extracted from the user's document.
- * @returns A promise that resolves to the parsed JSON object from the AI.
- */
+
 export const analyzeDocumentWithOpenAI = async (documentText: string) => {
   console.log("Sending request to OpenAI with gpt-4.1-nano...");
 
@@ -91,9 +78,9 @@ export const analyzeDocumentWithOpenAI = async (documentText: string) => {
     const response = await openai.chat.completions.create({
       model: "gpt-4.1-nano",
       messages: [{ role: "user", content: prompt }],
-      // Use a low temperature for factual, deterministic output
+
       temperature: 0.2,
-      // This is a crucial feature that forces the model to return valid JSON
+
       response_format: { type: "json_object" },
     });
 
@@ -103,12 +90,10 @@ export const analyzeDocumentWithOpenAI = async (documentText: string) => {
       throw new Error("OpenAI returned an empty response.");
     }
 
-    // The response should be a valid JSON string, so we parse it.
     return JSON.parse(resultText);
-
   } catch (error: any) {
     console.error("Error calling OpenAI API:", error);
-    // Re-throw the error so the controller can handle it
+
     throw new Error("Failed to get analysis from OpenAI.");
   }
 };

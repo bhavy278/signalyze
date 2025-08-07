@@ -21,7 +21,6 @@ const ToastContainer = ({ toasts, removeToast }: ToastContainerProps) => {
             key={position}
             className={`fixed ${positions[posKey]} z-50 flex flex-col gap-2`}
           >
-            {/* Filter and map toasts that belong to this position */}
             {toasts
               .filter((toast) => toast.position === posKey)
               .map((toast) => (

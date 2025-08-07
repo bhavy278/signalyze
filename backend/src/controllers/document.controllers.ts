@@ -33,7 +33,6 @@ export const uploadDocument = async (
   }
   const userId = _req.user?.id;
 
-  // Save relative path
   const relativeFilePath = path.join("/uploads", file.filename);
   const documentInfo: SaveDocumentType = {
     user_id: userId,
@@ -152,7 +151,6 @@ export const previewDocument = async (
       return res.status(404).send("Original file not found on server.");
     }
 
-    // If the file is already a PDF or an image, send it directly.
     if (
       document.type === "application/pdf" ||
       document.type.startsWith("image/")
@@ -160,7 +158,6 @@ export const previewDocument = async (
       return res.sendFile(originalFilePath);
     }
 
-    // If it's a DOCX, convert it to PDF and then send the PDF.
     if (
       document.type ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"

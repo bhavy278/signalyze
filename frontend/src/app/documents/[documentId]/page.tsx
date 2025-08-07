@@ -16,23 +16,22 @@ import { Select } from "@/app/components/ui/Select";
 import { SelectOption } from "@/types/ui.types";
 import { Loader2 } from "lucide-react";
 import { AnalysisViewer } from "@/app/components/AnalysisViewer/page";
-// import { DocumentPreviewer } from "@/app/components/DocumentPreviewer/page";
 
 const DocumentPreviewer = dynamic(
-    () =>
-      import("@/app/components/DocumentPreviewer/page").then(
-        (mod) => mod.DocumentPreviewer
-      ),
-    {
-      ssr: false, // This is still crucial
-      loading: () => (
-        <div className="flex items-center justify-center h-full bg-gray-200">
-          <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-          <p className="ml-3 text-gray-600">Loading Previewer...</p>
-        </div>
-      ),
-    }
-  );
+  () =>
+    import("@/app/components/DocumentPreviewer/page").then(
+      (mod) => mod.DocumentPreviewer
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-full bg-gray-200">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+        <p className="ml-3 text-gray-600">Loading Previewer...</p>
+      </div>
+    ),
+  }
+);
 export default function DocumentDetailPage() {
   const params = useParams();
   const documentId = params.documentId as string;
@@ -48,8 +47,6 @@ export default function DocumentDetailPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const { addToast } = useToast();
-
- 
 
   const fetchAnalysisForVersion = useCallback(
     async (version: number) => {
@@ -179,13 +176,7 @@ export default function DocumentDetailPage() {
             {document.original_filename}
           </h1>
         </div>
-        {/* <DocumentPreviewer filepath={document.filepath} /> */}
-        {/* <DocumentPreviewer filepath={document.filepath} /> */}
-        {/* <DocumentPreviewer
-          filepath={document.filepath}
-          filetype={document.type}
-        />
-        */}
+
         <DocumentPreviewer documentId={document.id.toString()} />
       </div>
 

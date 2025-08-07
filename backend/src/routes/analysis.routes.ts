@@ -8,8 +8,6 @@ import {
 
 const router = Router();
 
-// router.post("/documents/:id/:version/", analyzeDocumentById);
-
 router.post("/documents/:id", analyzeDocumentById);
 router.get("/documents/:id/versions", getAllAnalysisForDocument);
 router.get("/documents/:id/versions/:version", getAnalysisByVersion);

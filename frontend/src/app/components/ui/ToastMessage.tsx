@@ -19,7 +19,7 @@ const ToastMessage = ({ toast, onClose }: ToastMessageProps) => {
       `}
       >
         <span>{toast.message}</span>
-        {/* The cross icon button for manual removal */}
+
         <button
           onClick={onClose}
           className="ml-4 p-1 rounded-full hover:bg-white/20 focus:outline-none transition-colors"

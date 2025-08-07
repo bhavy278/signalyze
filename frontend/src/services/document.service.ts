@@ -1,7 +1,7 @@
 import {
   AllDocumentsResponse,
-  UploadResponse,
   SingleDocumentResponse,
+  UploadResponse,
 } from "@/types/document.types";
 import api from "./api";
 
@@ -61,38 +61,16 @@ export const deleteDocumentById = async (id: string): Promise<any> => {
 };
 export const getPreviewUrl = async (id: string): Promise<string> => {
   try {
-    // Use axios to get the file, specifying the response type as 'blob'
     const response = await api.get(`/documents/preview/${id}`, {
       responseType: "blob",
     });
 
-    // With axios, the blob data is directly in response.data
     const blob = response.data;
 
-    // Create and return a temporary local URL for the blob
     return URL.createObjectURL(blob);
-
   } catch (error) {
     console.error("Could not load preview:", error);
-    // Re-throw a user-friendly error message
+
     throw new Error("Could not load document preview. Please try again.");
   }
 };
-// export const previewDocument = async (id: string): Promise<any> => {
-//   try {
-//     const response: any = await api.get(`/documents/preview/${id}`, {
-//       responseType: "blob",
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Could not load preview.");
-//     }
-
-//     const blob = await response.blob();
-//     console.log(blob);
-//     return URL.createObjectURL(blob);
-//     // setPreviewUrl(URL.createObjectURL(blob));
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };

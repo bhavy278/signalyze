@@ -1,10 +1,9 @@
 import { db } from "../config/db.config";
-// import { analyzeDocumentWithOpenRouter } from "./ai.services";
-import { analyzeDocumentWithOpenAI } from "./ai.services";
-import { cleanText, getTextFromFile } from "./file.services";
-import { diff } from "json-diff";
 
-//  This is the function you already have, which creates a new analysis version.
+import { diff } from "json-diff";
+import { analyzeDocumentWithOpenAI } from "./ai.services";
+import { getTextFromFile } from "./file.services";
+
 export const getDocumentByIdAndAnalyze = async (id: number) => {
   const [[document]]: any = await db.query(
     "SELECT * FROM documents WHERE id = ?",
@@ -19,17 +18,12 @@ export const getDocumentByIdAndAnalyze = async (id: number) => {
 
   const analysisJson = await analyzeDocumentWithOpenAI(textFromFile);
 
-  // // This stored procedure saves the new analysis and increments the version.
   const [result]: any = await db.execute("CALL SaveAnalysis(?, ?)", [
     id,
     JSON.stringify(analysisJson),
   ]);
 
   const newAnalysis = result[0];
-
-  // // The JSON is stored as a string, so parse it before returning.
-
-  // newAnalysis.analysis = JSON.parse(newAnalysis.analysis);
 
   return newAnalysis;
 };
@@ -41,15 +35,13 @@ export const handleGetAllAnalysisForDocument = async (documentId: number) => {
   );
 
   if (rows.length === 0) {
-    return []; // Return an empty array if no analysis exist yet.
+    return [];
   }
 
   return rows;
 };
 
-/**
- * Retrieves a single, specific version of an analysis for a document.
- */
+
 export const handleGetAnalysisByVersion = async (
   documentId: number,
   version: number
@@ -65,8 +57,6 @@ export const handleGetAnalysisByVersion = async (
     );
   }
 
-  // The database stores the JSON as a string, so we need to parse it
-  // before sending it back to the controller.
   if (typeof analysis.analysis_json === "string") {
     analysis.analysis_json = JSON.parse(analysis.analysis_json);
   }
@@ -74,9 +64,7 @@ export const handleGetAnalysisByVersion = async (
   return analysis;
 };
 
-/**
- * Fetches two versions of an analysis and computes the difference between them.
- */
+
 export const handleCompareAnalysis = async (
   documentId: number,
   baseVersion: number,
@@ -90,7 +78,6 @@ export const handleCompareAnalysis = async (
     `Comparing document ${documentId}: version ${baseVersion} vs ${compareVersion}`
   );
 
-  // Reuse our existing function to get each version's data.
   const baseAnalysis = await handleGetAnalysisByVersion(
     documentId,
     baseVersion
@@ -100,8 +87,6 @@ export const handleCompareAnalysis = async (
     compareVersion
   );
 
-  // Use the json-diff library to find the differences.
-  // The `true` flag returns a more detailed diff object.
   const differences = diff(
     baseAnalysis.analysis_json,
     compareAnalysis.analysis_json,
@@ -117,7 +102,7 @@ export const handleCompareAnalysis = async (
       version: compareAnalysis.version,
       createdAt: compareAnalysis.created_at,
     },
-    // The `differences` object will be undefined if there are no changes.
+
     differences: differences || "No differences found.",
   };
 };

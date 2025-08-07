@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { getToken } from "@/lib/token"; // Assuming this exists
-import api from "@/services/api";
 import { getPreviewUrl } from "@/services/document.service";
-import dynamic from "next/dynamic"; // Keep this import
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface DocumentPreviewerProps {
   documentId: string;
@@ -17,9 +14,7 @@ export const DocumentPreviewer = ({ documentId }: DocumentPreviewerProps) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Define an async function to call the service
     const loadPreview = async () => {
-      // Prevent fetching if there's no ID
       if (!documentId) {
         setIsLoading(false);
         return;
@@ -29,7 +24,6 @@ export const DocumentPreviewer = ({ documentId }: DocumentPreviewerProps) => {
       setError(null);
 
       try {
-        // Call the service function to get the blob URL
         const url = await getPreviewUrl(documentId);
         setPreviewUrl(url);
       } catch (err: any) {
@@ -41,8 +35,6 @@ export const DocumentPreviewer = ({ documentId }: DocumentPreviewerProps) => {
 
     loadPreview();
 
-    // Cleanup function: Revoke the object URL to free up memory
-    // when the component is unmounted or the documentId changes.
     return () => {
       if (previewUrl) {
         URL.revokeObjectURL(previewUrl);

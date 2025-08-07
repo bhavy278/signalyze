@@ -17,10 +17,10 @@ import AnalysisRoutes from "./routes/analysis.routes";
 const app: Application = express();
 const PORT = 5001;
 
-// Middlewares
-app.use(cors(CORS_OPTIONS)); // Enable CORS for all origins by default
-app.use(morgan("dev")); // Log HTTP requests to console
-app.use(express.json()); // Parse JSON bodies
+
+app.use(cors(CORS_OPTIONS)); 
+app.use(morgan("dev")); 
+app.use(express.json());
 
 connectToDatabase();
 

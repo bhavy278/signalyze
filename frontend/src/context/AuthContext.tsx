@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { getToken, setToken, removeToken } from "@/lib/token"; // 1. Import your token functions
+import { getToken, setToken, removeToken } from "@/lib/token";
 import { useToast } from "./ToastContext";
 
 interface AuthContextType {
@@ -22,14 +22,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const router = useRouter(); // 2. Use the Next.js router
+  const router = useRouter();
 
   const { addToast } = useToast();
 
   useEffect(() => {
     const token = getToken();
-    // If a token is found, update the state. This will cause a re-render
-    // with the correct "Logout" state, which is safe after hydration.
+
     if (token) {
       setIsAuthenticated(true);
     }
@@ -37,20 +36,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (token: string) => {
     setToken(token);
-    setIsAuthenticated(true); // Directly update state
+    setIsAuthenticated(true);
     addToast({
       message: "Login successful.",
       severity: "success",
       position: "top-right",
     });
     router.push("/");
-
-
   };
 
   const logout = () => {
     removeToken();
-    setIsAuthenticated(false); // Directly update state
+    setIsAuthenticated(false);
     addToast({
       message: "Logout successful! Goodbye.",
       severity: "success",
@@ -75,7 +72,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    // Simplified check
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

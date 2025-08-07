@@ -22,7 +22,6 @@ export const Button = ({
   };
 
   const variantStyles = {
-    // Corrected: Set text color to light-200 (white) for the primary button
     primary: "bg-blue-700 text-white hover:bg-blue-700",
     secondary: "bg-gray-800 text-light-100 hover:bg-gray-900",
   };

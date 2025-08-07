@@ -8,7 +8,7 @@ import {
   deleteDocumentById,
 } from "@/services/document.service";
 import { useToast } from "@/context/ToastContext";
-import { Document } from "@/types/document.types"; // Make sure this type is defined
+import { Document } from "@/types/document.types";
 
 export default function MyDocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -49,7 +49,7 @@ export default function MyDocumentsPage() {
           severity: "success",
           position: "top-right",
         });
-        // Refresh the list after deletion
+
         fetchDocuments();
       } catch (error: any) {
         addToast({

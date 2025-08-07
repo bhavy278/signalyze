@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import React from "react";
 
-// Helper Component: Badge for boolean values
 const Badge = ({
   variant,
   children,
@@ -35,23 +34,20 @@ const Badge = ({
   );
 };
 
-// --- FIX IS HERE ---
-// Helper Component: A single labeled item, now updated to accept children
 const InfoItem = ({
   label,
   value,
-  children, // 1. Accept 'children' as a prop
+  children,
   isList = false,
 }: {
   label: string;
-  value?: string | string[]; // 2. Make 'value' optional
+  value?: string | string[];
   children?: React.ReactNode;
   isList?: boolean;
 }) => (
   <div className="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
     <dt className="text-sm font-semibold text-gray-600">{label}</dt>
     <dd className="mt-1 text-sm text-gray-800 sm:mt-0 sm:col-span-2">
-      {/* 3. Render children if they exist, otherwise fall back to the value prop */}
       {children ? (
         children
       ) : isList && Array.isArray(value) ? (
@@ -67,7 +63,6 @@ const InfoItem = ({
   </div>
 );
 
-// Main Component to display the entire analysis
 export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
   if (!analysis) {
     return (
@@ -79,7 +74,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* --- Document Summary --- */}
       <AnalysisSection
         title="Document Summary"
         icon={<FileText className="text-blue-600" />}
@@ -95,7 +89,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         />
       </AnalysisSection>
 
-      {/* --- Potential Traps & Risks --- */}
       <AnalysisSection
         title="Potential Traps & Risks"
         icon={<ShieldAlert className="text-red-600" />}
@@ -105,7 +98,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         ))}
       </AnalysisSection>
 
-      {/* --- Key Financials --- */}
       <AnalysisSection
         title="Key Financials"
         icon={<Landmark className="text-green-600" />}
@@ -115,7 +107,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         ))}
       </AnalysisSection>
 
-      {/* --- Contract Lifecycle --- */}
       <AnalysisSection
         title="Contract Lifecycle"
         icon={<Calendar className="text-purple-600" />}
@@ -128,7 +119,7 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
           label="Term Length"
           value={analysis.contract_lifecycle.term_length}
         />
-        {/* This now works correctly */}
+
         <InfoItem label="Auto-Renewal">
           <Badge
             variant={
@@ -150,7 +141,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         />
       </AnalysisSection>
 
-      {/* --- Rights & Obligations --- */}
       <AnalysisSection
         title="Rights & Obligations"
         icon={<ListChecks className="text-indigo-600" />}
@@ -167,7 +157,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         />
       </AnalysisSection>
 
-      {/* --- Major Restrictions --- */}
       <AnalysisSection
         title="Major Restrictions on User"
         icon={<Ban className="text-orange-600" />}
@@ -179,7 +168,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         />
       </AnalysisSection>
 
-      {/* --- Dispute Resolution --- */}
       <AnalysisSection
         title="Dispute Resolution"
         icon={<Gavel className="text-yellow-600" />}
@@ -194,7 +182,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
         />
       </AnalysisSection>
 
-      {/* --- Data & Privacy --- */}
       <AnalysisSection
         title="Data & Privacy"
         icon={<Lock className="text-gray-600" />}
@@ -208,7 +195,6 @@ export const AnalysisViewer = ({ analysis }: { analysis: AnalysisData }) => {
   );
 };
 
-// The AnalysisSection helper component remains the same
 const AnalysisSection = ({
   title,
   icon,

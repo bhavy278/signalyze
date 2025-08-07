@@ -1,8 +1,5 @@
 import { AxiosResponse } from "axios";
 
-/**
- * Represents the structure of a single document record in the database.
- */
 export interface Document {
   id: number;
   user_id: string;
@@ -11,24 +8,17 @@ export interface Document {
   filepath: string;
   size: number;
   type: string;
-  uploaded_at: string; // ISO date string
+  uploaded_at: string;
   deleted: boolean;
 }
 
-/**
- * Represents a single version of an analysis, primarily for listing.
- */
 export interface AnalysisVersion {
   id: number;
   document_id: number;
   version: number;
-  created_at: string; // ISO date string
+  created_at: string;
 }
 
-/**
- * The detailed JSON structure returned by the OpenAI analysis.
- * This should match the JSON schema in your backend prompt.
- */
 export interface AnalysisData {
   document_summary: {
     title: string;
@@ -66,58 +56,35 @@ export interface AnalysisData {
   }>;
 }
 
-/**
- * Represents a full analysis record, including the parsed JSON data.
- */
 export interface Analysis extends AnalysisVersion {
   analysis_json: AnalysisData;
 }
 
-// --- API Service Response Types ---
-
-/**
- * The expected response structure when fetching a single document.
- * Note: Your backend sends the document inside an array `data: [doc]`.
- */
 export interface SingleDocumentResponse {
   success: boolean;
   message: string;
   data: Document[];
 }
 
-/**
- * The expected response structure when fetching all documents for a user.
- */
 export interface AllDocumentsResponse {
   success: boolean;
   message: string;
   data: Document[];
 }
 
-/**
- * The expected response structure when fetching a single, full analysis.
- */
 export interface AnalysisResponse {
   success: boolean;
   analysis: Analysis;
 }
 
-/**
-
- * The expected response structure when fetching the list of all analysis versions for a document.
- */
 export interface AnalysisVersionsResponse {
   success: boolean;
   analysis: AnalysisVersion[];
 }
 
-/**
- * The expected response structure after successfully uploading a document.
- * The data object represents the document information before it has a database ID.
- */
 export interface UploadResponse extends AxiosResponse {
   success: boolean;
   message: string;
-  // data: Omit<Document, "id">;
+
   data: Document;
 }

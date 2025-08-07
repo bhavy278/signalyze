@@ -17,8 +17,6 @@ const Navbar = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // 1. Get isAuthenticated and logout directly from the context.
-  // This is your single source of truth.
   const { isAuthenticated, logout } = useAuth();
 
   return (
@@ -50,9 +48,7 @@ const Navbar = () => {
           })}
         </div>
         <div className="hidden md:block">
-          {/* 3. Use the isAuthenticated boolean directly for conditional rendering */}
           {isAuthenticated ? (
-            // If true, show Logout button
             <Button variant="primary" onClick={logout}>
               Logout
             </Button>

@@ -18,11 +18,11 @@ export const getTextFromFile = async (filename: string) => {
 
 export function cleanText(text: string): string {
   return text
-    .replace(/[\t\r]+/g, " ") // Remove tabs, carriage returns
+    .replace(/[\t\r]+/g, " ")
     .replace(/\s{1,}/g, " ")
     .replace(/\n{1,}/g, "\n")
     .replace(/\n{1,}/g, "\\")
-    .trim(); // Trim leading/trailing whitespace
+    .trim();
 }
 export async function extractTextFromFile(filePath: string): Promise<string> {
   const ext = path.extname(filePath).toLowerCase();
