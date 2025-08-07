@@ -22,4 +22,4 @@ RUN npm run build
 EXPOSE 5001
 
 # 8. Define the command to start your server
-CMD [ "node", "dist/server.js" ]
+CMD [ "node", "dist/app.js" ]
