@@ -2,6 +2,7 @@
 
 import { AnalysisViewer } from "@/app/components/AnalysisViewer/AnalysisViewer";
 import { Button } from "@/app/components/ui/Button";
+import LoadingButton from "@/app/components/ui/LoadingButton";
 import { Select } from "@/app/components/ui/Select";
 import { useToast } from "@/context/ToastContext";
 import {
@@ -227,10 +228,7 @@ export default function DocumentDetailPage() {
               )}
               <Button onClick={handleAnalyze} disabled={isAnalyzing}>
                 {isAnalyzing ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
-                    Analyzing...
-                  </>
+                  <LoadingButton txt="Analyzing..." />
                 ) : (
                   "Re-Analyze"
                 )}

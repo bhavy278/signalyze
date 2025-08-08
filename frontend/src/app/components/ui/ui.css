@@ -1,0 +1,16 @@
+.loader {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader svg {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.loader label {
+    margin-left: 5px;
+}

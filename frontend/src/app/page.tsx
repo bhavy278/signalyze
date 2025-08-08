@@ -8,6 +8,7 @@ import { useToast } from "@/context/ToastContext";
 import { uploadDocument } from "@/services/document.service";
 import { analyzeDocument } from "@/services/analysis.service";
 import { Loader2 } from "lucide-react";
+import LoadingButton from "./components/ui/LoadingButton";
 
 type PageState =
   | "initial"
@@ -108,7 +109,7 @@ export default function HomePage() {
       case "uploading":
         return (
           <Button size="md" disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading...
+            <LoadingButton txt="Uploading..." />
           </Button>
         );
       case "uploaded":
@@ -120,7 +121,7 @@ export default function HomePage() {
       case "analyzing":
         return (
           <Button size="md" disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
+            <LoadingButton txt="Analyzing..." />
           </Button>
         );
       default:
