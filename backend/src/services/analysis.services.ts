@@ -3,12 +3,20 @@ import { db } from "../config/db.config";
 import { diff } from "json-diff";
 import { analyzeDocumentWithOpenAI } from "./ai.services";
 import { getTextFromFile } from "./file.services";
+import {
+  ANALYSIS_QUERIES,
+  DOCUMENT_QUERIES,
+} from "../commons/constants/query.constants";
+import { getQueryFromFile } from "./app.services";
 
-export const getDocumentByIdAndAnalyze = async (id: number) => {
-  const [[document]]: any = await db.query(
-    "SELECT * FROM documents WHERE id = ?",
-    [id]
+export const getDocumentByIdAndAnalyze = async (
+  id: number,
+  user_id: number
+) => {
+  const getDocumentQuery = getQueryFromFile(
+    DOCUMENT_QUERIES.GET_SINGLE_DOCUMENT_BY_DOCUMENT_ID
   );
+  const [[document]]: any = await db.query(getDocumentQuery, [id, user_id]);
 
   if (!document) {
     throw new Error("Document not found");
@@ -18,7 +26,9 @@ export const getDocumentByIdAndAnalyze = async (id: number) => {
 
   const analysisJson = await analyzeDocumentWithOpenAI(textFromFile);
 
-  const [result]: any = await db.execute("CALL SaveAnalysis(?, ?)", [
+  const analysisQuery = getQueryFromFile(ANALYSIS_QUERIES.SAVE_ANALYSIS);
+
+  const [result]: any = await db.execute(analysisQuery, [
     id,
     JSON.stringify(analysisJson),
   ]);
@@ -29,10 +39,10 @@ export const getDocumentByIdAndAnalyze = async (id: number) => {
 };
 
 export const handleGetAllAnalysisForDocument = async (documentId: number) => {
-  const [rows]: any = await db.query(
-    "SELECT id, document_id, version, created_at FROM analysis WHERE document_id = ? ORDER BY version DESC",
-    [documentId]
+  const query = getQueryFromFile(
+    ANALYSIS_QUERIES.GET_ALL_ANALYSIS_FOR_DOCUMENT
   );
+  const [rows]: any = await db.query(query, [documentId]);
 
   if (rows.length === 0) {
     return [];
@@ -41,15 +51,14 @@ export const handleGetAllAnalysisForDocument = async (documentId: number) => {
   return rows;
 };
 
-
 export const handleGetAnalysisByVersion = async (
   documentId: number,
   version: number
 ) => {
-  const [[analysis]]: any = await db.query(
-    "SELECT * FROM analysis WHERE document_id = ? AND version = ?",
-    [documentId, version]
+  const query = getQueryFromFile(
+    ANALYSIS_QUERIES.GET_ANALYSIS_BY_DOCUMENT_ID_AND_VERSION
   );
+  const [[analysis]]: any = await db.query(query, [documentId, version]);
 
   if (!analysis) {
     throw new Error(
@@ -63,7 +72,6 @@ export const handleGetAnalysisByVersion = async (
 
   return analysis;
 };
-
 
 export const handleCompareAnalysis = async (
   documentId: number,

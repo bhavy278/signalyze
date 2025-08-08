@@ -6,7 +6,7 @@ export type SaveDocumentType = {
   filepath: String;
   size: Number; // Size in bytes
   type: String; // MIME type
-
+  latest_version: number | null;
   uploaded_at: Date;
   deleted: false;
 };
@@ -21,6 +21,7 @@ export type UserDocumentsType = {
   type: string;
   uploaded_at: Date;
   deleted: boolean;
+  latest_version: number | null;
 };
 
 export type UserDocumentType = {

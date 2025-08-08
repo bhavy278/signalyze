@@ -4,7 +4,7 @@ import {
   getAllDocumentsByUser,
   getDocumentById,
   deleteDocumentById,
-  previewDocument,
+  getDocumentFile,
 } from "../controllers/document.controllers";
 import upload from "../middlewares/file.middleware";
 
@@ -14,7 +14,7 @@ router.post("/upload", upload.single("file"), uploadDocument);
 router.get("/", getAllDocumentsByUser);
 router.get("/:documentId", getDocumentById);
 router.delete("/:documentId", deleteDocumentById);
-router.get("/preview/:documentId", previewDocument);
+router.get("/:documentId/file", getDocumentFile);
 
 const DocumentRoutes = router;
 export default DocumentRoutes;

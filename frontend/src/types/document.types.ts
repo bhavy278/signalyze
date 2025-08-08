@@ -10,6 +10,7 @@ export interface Document {
   type: string;
   uploaded_at: string;
   deleted: boolean;
+  latest_version: number | null;
 }
 
 export interface AnalysisVersion {

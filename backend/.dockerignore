@@ -1,0 +1,9 @@
+# Ignore development folders and secrets
+node_modules
+dist
+.env
+npm-debug.log
+
+# IMPORTANT: Do NOT ignore the ca.pem file
+# The "!" negates the ignore rule from .gitignore
+!src/config/ca.pem

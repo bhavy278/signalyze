@@ -8,7 +8,6 @@ import {
   UserDocumentType,
 } from "../commons/types/document.types";
 import {
-  convertDocxToPdf,
   handleDeleteDocument,
   handleGetAllDocumentsByUser,
   handleGetSingleDocumentById,
@@ -41,6 +40,7 @@ export const uploadDocument = async (
     filepath: relativeFilePath,
     size: file.size,
     type: file.mimetype,
+    latest_version: null,
     uploaded_at: new Date(),
     deleted: false,
   };
@@ -127,7 +127,7 @@ export const deleteDocumentById = async (
   }
 };
 
-export const previewDocument = async (
+export const getDocumentFile = async (
   _req: AuthenticatedRequest,
   res: Response
 ) => {
@@ -135,10 +135,10 @@ export const previewDocument = async (
     const { documentId } = _req.params;
     const userId = _req.user?.id;
 
-    const [[document]]: any = await db.query(
-      "SELECT * FROM documents WHERE id = ? AND user_id = ?",
-      [documentId, userId]
+    const query = getQueryFromFile(
+      DOCUMENT_QUERIES.GET_SINGLE_DOCUMENT_BY_DOCUMENT_ID
     );
+    const [[document]]: any = await db.query(query, [documentId, userId]);
 
     if (!document) {
       return res.status(404).send("Document not found or access denied.");
@@ -155,6 +155,14 @@ export const previewDocument = async (
       document.type === "application/pdf" ||
       document.type.startsWith("image/")
     ) {
+      res.setHeader(
+        "Content-Type",
+        "application/pdf" // The only change is here
+      );
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${document.original_filename}"`
+      );
       return res.sendFile(originalFilePath);
     }
 
@@ -162,8 +170,16 @@ export const previewDocument = async (
       document.type ===
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
-      const pdfPath = await convertDocxToPdf(originalFilePath, uploadsDir);
-      return res.sendFile(pdfPath);
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${document.original_filename}"`
+      );
+
+      return res.sendFile(originalFilePath);
     }
 
     res.status(400).send("File type cannot be previewed.");

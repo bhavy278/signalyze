@@ -1,6 +1,3 @@
-import { execFile } from "child_process";
-import fs from "fs";
-import path from "path";
 import { RESULT_ENUM } from "../commons/constants/app.constants";
 import { DOCUMENT_QUERIES } from "../commons/constants/query.constants";
 import {
@@ -23,7 +20,7 @@ export const saveDocument = async (document: SaveDocumentType) => {
     document.uploaded_at,
     document.deleted,
   ]);
-  console.log(result);
+
   const newDocumentId = result[0][0]?.id;
 
   if (newDocumentId) {
@@ -77,36 +74,4 @@ export const handleDeleteDocument = async (
   const [rows]: any = await db.query(query, [documentId, userId]);
   if (rows.affectedRows > 0) return RESULT_ENUM.SUCCESS;
   else return RESULT_ENUM.FAILED;
-};
-
-export const convertDocxToPdf = (
-  docxPath: string,
-  outputDir: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const args = [
-      "--headless",
-      "--convert-to",
-      "pdf",
-      "--outdir",
-      outputDir,
-      docxPath,
-    ];
-
-    execFile("soffice", args, (error, stdout, stderr) => {
-      if (error) {
-        console.error("LibreOffice conversion error:", stderr);
-        return reject(new Error("Failed to convert document to PDF."));
-      }
-
-      const pdfFilename = `${path.basename(docxPath, ".docx")}.pdf`;
-      const pdfPath = path.join(outputDir, pdfFilename);
-
-      if (fs.existsSync(pdfPath)) {
-        resolve(pdfPath);
-      } else {
-        reject(new Error("Converted PDF file not found."));
-      }
-    });
-  });
 };

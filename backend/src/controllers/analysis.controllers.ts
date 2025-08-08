@@ -13,7 +13,8 @@ export const analyzeDocumentById = async (
 ) => {
   try {
     const id = parseInt(_req.params.id);
-    const analysis = await getDocumentByIdAndAnalyze(id);
+    const user_id=parseInt(_req.user.id);
+    const analysis = await getDocumentByIdAndAnalyze(id,user_id);
     res.status(200).json({ success: true, analysis });
   } catch (error: any) {
     console.error(error);

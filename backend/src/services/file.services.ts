@@ -1,7 +1,7 @@
-import path from "path";
 import fs from "fs/promises";
-import PdfParse from "pdf-parse";
 import mammoth from "mammoth";
+import path from "path";
+import PdfParse from "pdf-parse";
 
 export const getTextFromFile = async (filename: string) => {
   const filePath = path.join(__dirname, "../../", "uploads", filename);

@@ -1,0 +1,1 @@
+SELECT * FROM analysis WHERE document_id = ? AND version = ?

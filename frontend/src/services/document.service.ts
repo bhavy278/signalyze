@@ -85,17 +85,30 @@ export const deleteDocumentById = async (id: string): Promise<void> => {
   }
 };
 
-export const getPreviewUrl = async (id: string): Promise<string> => {
+export const getPreviewBlob = async (id: string): Promise<Blob> => {
   try {
-    const response = await api.get<Blob>(`/documents/preview/${id}`, {
+    const response = await api.get<Blob>(`/documents/${id}/file`, {
       responseType: "blob",
     });
-
-    const blob = response.data;
-
-    return URL.createObjectURL(blob);
+    // With axios, the blob data is directly in `response.data`
+    return response.data;
   } catch (error: unknown) {
     console.error("Could not load preview:", error);
     throw new Error("Could not load document preview. Please try again.");
   }
 };
+
+// export const getPreviewUrl = async (id: string): Promise<string> => {
+//   try {
+//     const response = await api.get<Blob>(`/documents/preview/${id}`, {
+//       responseType: "blob",
+//     });
+
+//     const blob = response.data;
+
+//     return URL.createObjectURL(blob);
+//   } catch (error: unknown) {
+//     console.error("Could not load preview:", error);
+//     throw new Error("Could not load document preview. Please try again.");
+//   }
+// };

@@ -25,7 +25,7 @@ const DocumentPreviewer = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-full bg-gray-200">
+      <div className="flex items-center justify-center  bg-gray-200">
         <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
         <p className="ml-3 text-gray-600">Loading Previewer...</p>
       </div>
@@ -191,7 +191,67 @@ export default function DocumentDetailPage() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <>
+      <div className="flex h-screen bg-gray-50">
+        {/* --- Left Pane --- */}
+        {/* This structure ensures the previewer can fill the available space */}
+        <div className="w-1/2 h-full flex flex-col border-r border-gray-200">
+          <div className="p-4 border-b border-gray-200 bg-white flex-shrink-0">
+            <h1
+              className="text-xl font-bold text-gray-800 truncate"
+              title={document.original_filename}
+            >
+              {document.original_filename}
+            </h1>
+          </div>
+
+          {/* The previewer component will now correctly fill the remaining space */}
+          <DocumentPreviewer
+            documentId={document.id.toString()}
+            filetype={document.type}
+          />
+        </div>
+
+        {/* --- Right Pane --- */}
+        {/* This structure is correct. The content area will grow and scroll. */}
+        <div className="w-1/2 h-full flex flex-col">
+          <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center flex-shrink-0">
+            <h2 className="text-xl font-semibold text-gray-800">Analysis</h2>
+            <div className="flex items-center gap-4">
+              {versions.length > 0 && (
+                <Select
+                  options={versionOptions}
+                  value={selectedVersion}
+                  onSelect={handleVersionSelect}
+                />
+              )}
+              <Button onClick={handleAnalyze} disabled={isAnalyzing}>
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                    Analyzing...
+                  </>
+                ) : (
+                  "Re-Analyze"
+                )}
+              </Button>
+            </div>
+          </div>
+          <div className="flex-grow overflow-y-auto p-6">
+            {selectedAnalysis ? (
+              <AnalysisViewer analysis={selectedAnalysis.analysis_json} />
+            ) : (
+              <div className="text-center text-gray-500 pt-20">
+                <h3 className="text-xl font-semibold">No Analysis Available</h3>
+                <p className="mt-2">
+                  Click &quot;Re-Analyze&quot; to generate the first version.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      {/* <div className="flex h-screen bg-gray-50">
       <div className="w-1/2 h-full flex flex-col border-r border-gray-200">
         <div className="p-4 border-b border-gray-200 bg-white">
           <h1
@@ -202,7 +262,10 @@ export default function DocumentDetailPage() {
           </h1>
         </div>
 
-        <DocumentPreviewer documentId={document.id.toString()} />
+        <DocumentPreviewer
+          documentId={document.id.toString()}
+          filetype={document.type}
+        />
       </div>
 
       <div className="w-1/2 h-full flex flex-col">
@@ -240,6 +303,7 @@ export default function DocumentDetailPage() {
           )}
         </div>
       </div>
-    </div>
+    </div> */}
+    </>
   );
 }

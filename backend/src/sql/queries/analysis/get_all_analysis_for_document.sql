@@ -1,0 +1,1 @@
+SELECT id, document_id, version, created_at FROM signalyze.analysis WHERE document_id = ? ORDER BY version DESC

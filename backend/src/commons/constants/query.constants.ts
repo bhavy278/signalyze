@@ -14,8 +14,15 @@ export const DOCUMENT_QUERIES = {
     "../sql/queries/document/get_all_documents_by_user.sql",
   GET_SINGLE_DOCUMENT_BY_DOCUMENT_ID:
     "../sql/queries/document/get_single_document_by_document_id.sql",
-  DELETE_DOCUMENT_BY_ID:
-    "../sql/queries/document/delete_document_by_id.sql",
+  DELETE_DOCUMENT_BY_ID: "../sql/queries/document/delete_document_by_id.sql",
+};
+
+export const ANALYSIS_QUERIES = {
+  SAVE_ANALYSIS: "../sql/queries/analysis/save_analysis.sql",
+  GET_ALL_ANALYSIS_FOR_DOCUMENT:
+    "../sql/queries/analysis/get_all_analysis_for_document.sql",
+    GET_ANALYSIS_BY_DOCUMENT_ID_AND_VERSION:
+    "../sql/queries/analysis/get_analysis_by_version.sql",
 };
 
 export const STORED_PROCEDURES = {

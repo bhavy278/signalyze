@@ -59,11 +59,11 @@ export const getAnalysisByVersion = async (
 // If this method is not implemented yet, leave a comment or return a placeholder
 export const getAllAnalysisForDocument = async (
   documentId: string,
-  userId: string
+
 ): Promise<unknown> => {
   try {
     const response = await api.get(
-      `/analysis/documents/${documentId}/users/${userId}/all`
+      `/analysis/documents/${documentId}/versions`
     );
     return response.data;
   } catch (error: unknown) {

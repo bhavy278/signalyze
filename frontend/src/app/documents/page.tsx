@@ -20,6 +20,7 @@ export default function MyDocumentsPage() {
       const response = await getAllDocuments();
       if (response.success) {
         setDocuments(response.data);
+        console.log(response.data);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -94,41 +95,44 @@ export default function MyDocumentsPage() {
       {documents.length > 0 ? (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <ul className="divide-y divide-gray-200">
-            {documents.map((doc) => (
-              <li
-                key={doc.id}
-                className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <FileText className="h-8 w-8 text-blue-500" />
-                  <div>
-                    <p className="font-semibold text-gray-800 truncate max-w-md">
-                      {doc.original_filename}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Uploaded on:{" "}
-                      {new Date(doc.uploaded_at).toLocaleDateString()}
-                    </p>
+            {documents.map((doc: Document) => {
+              const navLink = `/documents/${doc.id}/`;
+              return (
+                <li
+                  key={doc.id}
+                  className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <FileText className="h-8 w-8 text-blue-500" />
+                    <div>
+                      <p className="font-semibold text-gray-800 truncate max-w-md">
+                        {doc.original_filename}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Uploaded on:{" "}
+                        {new Date(doc.uploaded_at).toLocaleDateString()}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Link
-                    href={`/documents/${doc.id}`}
-                    className="p-2 text-gray-500 hover:text-blue-600"
-                    title="View & Analyze"
-                  >
-                    <Eye size={20} />
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(doc.id.toString())}
-                    className="p-2 text-gray-500 hover:text-red-600"
-                    title="Delete Document"
-                  >
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              </li>
-            ))}
+                  <div className="flex items-center gap-4">
+                    <Link
+                      href={navLink}
+                      className="p-2 text-gray-500 hover:text-blue-600"
+                      title="View & Analyze"
+                    >
+                      <Eye size={20} />
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(doc.id.toString())}
+                      className="p-2 text-gray-500 hover:text-red-600"
+                      title="Delete Document"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : (
