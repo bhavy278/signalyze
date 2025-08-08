@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import LoadingButton from "../ui/LoadingButton";
 
 const Register = () => {
   const [formData, setFormData] = useState<RegisterUserType>({
@@ -18,7 +19,7 @@ const Register = () => {
     role: "user",
   });
   const [emailError, setEmailError] = useState<string | null>(null);
-
+  const [isRegistering, setIsRegistering] = useState(false);
   const router = useRouter();
   const { addToast } = useToast();
 
@@ -28,16 +29,27 @@ const Register = () => {
       alert("Please fix the errors before submitting.");
       return;
     }
-    const response: AuthResponseType = await registerUser(formData);
+    setIsRegistering(true);
+    try {
+      const response: AuthResponseType = await registerUser(formData);
 
-    if (response.success) {
-      console.log(response.success);
+      if (response.success) {
+        console.log(response.success);
+        addToast({
+          message: "Registered successfully! Please login here.",
+          severity: "success",
+          position: "top-right",
+        });
+        router.push("/auth?type=login");
+      }
+    } catch (error: any) {
       addToast({
-        message: "Registered successfully! Please login here.",
-        severity: "success",
+        message: error.message,
+        severity: "error",
         position: "top-right",
       });
-      router.push("/auth?type=login");
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -121,8 +133,17 @@ const Register = () => {
           </div>
 
           <div>
-            <Button type="submit" className="w-full" size="lg">
-              Sign up
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={isRegistering}
+            >
+              {isRegistering ? (
+                <LoadingButton txt="Registering..." />
+              ) : (
+                "Register"
+              )}
             </Button>
           </div>
         </form>

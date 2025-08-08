@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import LoadingButton from "../ui/LoadingButton";
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginUserType>({
@@ -16,6 +17,7 @@ const Login = () => {
     password: "",
   });
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const router = useRouter();
   const { addToast } = useToast();
@@ -26,16 +28,26 @@ const Login = () => {
       alert("Please fix the errors before submitting.");
       return;
     }
+    setIsLoggingIn(true);
+    try {
+      const response: AuthResponseType = await loginUser(formData);
 
-    const response: AuthResponseType = await loginUser(formData);
-
-    if (response.success) {
+      if (response.success) {
+        addToast({
+          message: "Login successful! Welcome back.",
+          severity: "success",
+          position: "top-right",
+        });
+        router.push("/");
+      }
+    } catch (error: any) {
       addToast({
-        message: "Login successful! Welcome back.",
-        severity: "success",
+        message: error.message,
+        severity: "error",
         position: "top-right",
       });
-      router.push("/");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -70,7 +82,7 @@ const Login = () => {
     if (token) {
       router.push("/");
     }
-  }, [router]); // ✅ Added router to dependencies
+  }, [router]); 
 
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -123,8 +135,13 @@ const Login = () => {
           </div>
 
           <div>
-            <Button type="submit" className="w-full" size="lg">
-              Sign in
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={isLoggingIn}
+            >
+              {isLoggingIn ? <LoadingButton txt="Signing In..." /> : "Sign in"}
             </Button>
           </div>
         </form>

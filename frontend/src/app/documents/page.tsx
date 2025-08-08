@@ -9,6 +9,7 @@ import {
 } from "@/services/document.service";
 import { useToast } from "@/context/ToastContext";
 import { Document } from "@/types/document.types";
+import { FileIcon } from "../components/ui/FileIcon";
 
 export default function MyDocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -97,13 +98,18 @@ export default function MyDocumentsPage() {
           <ul className="divide-y divide-gray-200">
             {documents.map((doc: Document) => {
               const navLink = `/documents/${doc.id}/`;
+              console.log(doc);
               return (
                 <li
                   key={doc.id}
                   className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
                 >
-                  <div className="flex items-center gap-4">
-                    <FileText className="h-8 w-8 text-blue-500" />
+                  <div
+                    className="flex items-center gap-4"
+                    title={doc.original_filename}
+                  >
+                    {/* <FileText className="h-8 w-8 text-blue-500" /> */}
+                    <FileIcon filetype={doc.type} />
                     <div>
                       <p className="font-semibold text-gray-800 truncate max-w-md">
                         {doc.original_filename}
@@ -136,7 +142,7 @@ export default function MyDocumentsPage() {
           </ul>
         </div>
       ) : (
-        <div className="text-center py-16 border-2 border-dashed rounded-lg">
+        <div className="text-center py-16 rounded-lg bg-white shadow-md">
           <h2 className="text-xl font-semibold text-gray-700">
             No Documents Found
           </h2>
