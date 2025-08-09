@@ -40,9 +40,12 @@ const Login = () => {
         });
         router.push("/");
       }
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred.";
+
       addToast({
-        message: error.message,
+        message: errorMessage,
         severity: "error",
         position: "top-right",
       });
@@ -82,7 +85,7 @@ const Login = () => {
     if (token) {
       router.push("/");
     }
-  }, [router]); 
+  }, [router]);
 
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

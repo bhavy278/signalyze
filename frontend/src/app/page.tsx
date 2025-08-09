@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { StyledFileUpload } from "./components/ui/FileUpload";
-import { Button } from "./components/ui/Button";
 import { useToast } from "@/context/ToastContext";
-import { uploadDocument } from "@/services/document.service";
 import { analyzeDocument } from "@/services/analysis.service";
-import { Loader2 } from "lucide-react";
+import { uploadDocument } from "@/services/document.service";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "./components/ui/Button";
+import { StyledFileUpload } from "./components/ui/FileUpload";
 import LoadingButton from "./components/ui/LoadingButton";
 
 type PageState =

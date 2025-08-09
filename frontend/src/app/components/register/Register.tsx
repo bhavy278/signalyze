@@ -42,9 +42,12 @@ const Register = () => {
         });
         router.push("/auth?type=login");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred.";
+
       addToast({
-        message: error.message,
+        message: errorMessage,
         severity: "error",
         position: "top-right",
       });

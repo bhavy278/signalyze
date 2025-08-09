@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
-import { FileText, Trash2, Eye, PlusCircle } from "lucide-react";
-import {
-  getAllDocuments,
-  deleteDocumentById,
-} from "@/services/document.service";
 import { useToast } from "@/context/ToastContext";
+import {
+  deleteDocumentById,
+  getAllDocuments,
+} from "@/services/document.service";
 import { Document } from "@/types/document.types";
+import { Eye, PlusCircle, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { FileIcon } from "../components/ui/FileIcon";
 
 export default function MyDocumentsPage() {
@@ -108,7 +108,6 @@ export default function MyDocumentsPage() {
                     className="flex items-center gap-4"
                     title={doc.original_filename}
                   >
-                    {/* <FileText className="h-8 w-8 text-blue-500" /> */}
                     <FileIcon filetype={doc.type} />
                     <div>
                       <p className="font-semibold text-gray-800 truncate max-w-md">
