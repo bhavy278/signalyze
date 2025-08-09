@@ -13,10 +13,10 @@ if (!DB_NAME) {
   throw new Error("⚠️ DB_NAME is not defined in .env");
 }
 
-// const connectionString = process.env.AIVEN_DB_URI;
-// if (!connectionString) {
-//   throw new Error("⚠️ AIVEN_DB_URI is not defined in .env");
-// }
+const connectionString = process.env.AIVEN_DB_URI;
+if (!connectionString) {
+  throw new Error("⚠️ AIVEN_DB_URI is not defined in .env");
+}
 
 export let db: mysql.Pool;
 export async function connectToDatabase(): Promise<mysql.Pool> {
@@ -39,22 +39,22 @@ export async function connectToDatabase(): Promise<mysql.Pool> {
     await connection.end();
 
     // Step 2: Now create pool with the actual DB
-    db = mysql.createPool({
-      host: DB_HOST,
-      port: Number(DB_PORT),
-      user: DB_USER,
-      password: DB_PASSWORD,
-      database: DB_NAME,
-      connectionLimit: 10,
-      multipleStatements: true,
-    });
     // db = mysql.createPool({
-    //   uri: connectionString,
-    //   waitForConnections: true,
+    //   host: DB_HOST,
+    //   port: Number(DB_PORT),
+    //   user: DB_USER,
+    //   password: DB_PASSWORD,
+    //   database: DB_NAME,
     //   connectionLimit: 10,
-    //   queueLimit: 0,
-    //   multipleStatements: true, // Keep this for your init scripts
+    //   multipleStatements: true,
     // });
+    db = mysql.createPool({
+      uri: connectionString,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      multipleStatements: true, // Keep this for your init scripts
+    });
 
     // Optional: test pool connection
     await db.getConnection();
@@ -84,7 +84,7 @@ const createStoredProcedures = async (db: mysql.Pool) => {
 
   const saveDocumentQuery = getQueryFromFile(STORED_PROCEDURES.SAVE_DOCUMENT);
   await db.query(saveDocumentQuery);
-  
+
   const saveAnalysisQuery = getQueryFromFile(STORED_PROCEDURES.SAVE_ANALYSIS);
   await db.query(saveAnalysisQuery);
 

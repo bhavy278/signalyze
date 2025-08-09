@@ -1,27 +1,23 @@
-# 1. Start with a Node.js image based on Debian Linux
-FROM node:18-slim
+# Use official Node.js LTS image as base
+FROM node:20-alpine
 
-# 2. Install LibreOffice
-RUN apt-get update && apt-get install -y libreoffice && apt-get clean
+# Set working directory inside container
+WORKDIR /app
 
-# 3. Set up the working directory
-WORKDIR /usr/src/app
-
-# 4. Copy package.json and install dependencies
+# Copy package.json and package-lock.json (if present)
 COPY package*.json ./
+
+# Install dependencies (including dev dependencies needed for build)
 RUN npm install
 
-# 5. Copy the rest of your source code (this will now include ca.pem)
+# Copy all source files
 COPY . .
 
-# 6. Build your TypeScript code
+# Build TypeScript to JavaScript
 RUN npm run build
 
-# 7. Manually copy the non-TypeScript assets
-COPY src/sql dist/sql
+# Expose the port your app runs on (assume 3000, adjust if needed)
+EXPOSE 3000
 
-# 8. Expose the port
-EXPOSE 5001
-
-# 9. Define the command to start your server
-CMD [ "node", "dist/app.js" ]
+# Start the app
+CMD ["node", "dist/app.js"]
