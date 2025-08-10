@@ -13,6 +13,7 @@ import AuthRoutes from "./routes/auth.routes";
 import UserRoutes from "./routes/user.routes";
 import DocumentRoutes from "./routes/document.routes";
 import AnalysisRoutes from "./routes/analysis.routes";
+import axios from "axios";
 
 const app: Application = express();
 const PORT = 5001;
@@ -48,5 +49,19 @@ app.get(
   }
 );
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running at https://signalyze-backend.onrender.com`);
+
+  const keepAlive = async () => {
+    try {
+      const url =
+        process.env.SERVER_URL ||
+        `https://signalyze-backend.onrender.com/api/v1`;
+      const response = await axios.get(url);
+      console.log("Keep-alive ping successful:", response.status);
+    } catch (error: any) {
+      console.error("Keep-alive ping failed:", error.message);
+    }
+  };
+
+  setInterval(keepAlive, 30000);
 });
