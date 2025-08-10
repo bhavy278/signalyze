@@ -11,7 +11,7 @@ Signalyze is a full-stack web application designed to bring clarity and transpar
 
 * **Secure User Authentication:** JWT-based authentication for user registration and login.
 * **Document Upload & Management:** Upload PDF, DOCX, and image files. View all your documents in a clean dashboard.
-* **AI-Powered Analysis:** Leverages Large Language Models (LLMs) to perform in-depth analysis of document text.
+* **AI-Powered Analysis:** Leverages OpenAI's `gpt-4.1-nano` model to perform in-depth analysis of document text.
 * **Structured Insights:** Extracts key financials, critical dates, user obligations, and potential risks into a structured, readable format.
 * **Analysis Versioning:** Re-analyze documents and easily switch between different analysis versions.
 * **Multi-Format Document Preview:** A dynamic viewer that can display PDFs and render DOCX files as readable HTML directly in the browser.
@@ -34,8 +34,8 @@ This project is built with a modern, scalable monorepo architecture, separating 
 * **Database:** MySQL (hosted on Aiven)
 * **Authentication:** JSON Web Tokens (JWT)
 * **File Handling:** Multer for uploads
-* **AI Integration:** OpenAI API
-* **Deployment:** Docker, AWS Elastic Beanstalk
+* **AI Integration:** OpenAI API (`gpt-4.1-nano`)
+* **Deployment:** Render.com
 
 ---
 ## API Routes
@@ -72,13 +72,12 @@ Each package has its own `package.json` and can be run independently.
 
 ### **Prerequisites**
 * Node.js (v18 or later)
-* Docker Desktop (for running the backend)
-* A local or cloud-based MySQL instance
+* A cloud-based MySQL instance (e.g., from Aiven)
 
 ### **Backend Setup**
 1.  Navigate to the `backend` directory: `cd backend`
 2.  Install dependencies: `npm install`
-3.  Create a `.env` file and add your environment variables (database URI, JWT secret, OpenAI key, etc.).
+3.  Create a `.env` file and add your environment variables (database URI from Aiven, JWT secret, OpenAI key, etc.).
 4.  Start the development server: `npm run dev`
 
 ### **Frontend Setup**
@@ -94,8 +93,8 @@ Each package has its own `package.json` and can be run independently.
 ## Deployment
 
 This application is designed for a professional split deployment:
-* The **backend** is containerized with Docker (including LibreOffice for document conversion) and is deployed on **AWS Elastic Beanstalk**.
-* The **frontend** is deployed on **Netlify** (or Vercel), which is optimized for Next.js applications.
+* The **backend** is deployed as a Web Service on **Render.com**.
+* The **frontend** is deployed on **Netlify**, which is optimized for Next.js applications.
 * The **database** is a managed MySQL instance on **Aiven**.
 
 ---
