@@ -1,8 +1,19 @@
+"use client";
+
 import { keepServerRunning } from "@/services/util.service";
-import React from "react";
+import { useEffect } from "react";
 
 const Footer = () => {
-  keepServerRunning();
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log("Pinging server to keep it alive...");
+      keepServerRunning();
+    }, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <footer className="bg-gray-800 text-white">

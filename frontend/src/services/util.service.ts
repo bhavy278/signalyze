@@ -1,8 +1,6 @@
+import axios from "axios";
 import api from "./api";
 
 export const keepServerRunning = async () => {
-  setInterval(async () => {
-    const response = await api.get("/");
-    console.log(response.data);
-  }, 10000);
+  const response = await axios.get("http://localhost:5001/api/v1");
 };
