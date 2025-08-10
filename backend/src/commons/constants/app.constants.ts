@@ -1,6 +1,11 @@
 import { CorsOptions } from "cors";
 export const CORS_OPTIONS: CorsOptions = {
-  origin: ["http://localhost:3000", "http://localhost:3000"],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://signalyze.netlify.app",
+    "https://signalyze-frontend.onrender.com",
+  ],
   credentials: true,
 };
 
