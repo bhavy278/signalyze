@@ -63,5 +63,5 @@ app.listen(PORT, () => {
     }
   };
 
-  setInterval(keepAlive, 30000);
+  setInterval(keepAlive, 5 * 1000);
 });
