@@ -1,6 +1,9 @@
+import { keepServerRunning } from "@/services/util.service";
 import React from "react";
 
 const Footer = () => {
+  keepServerRunning();
+
   return (
     <footer className="bg-gray-800 text-white">
       <div className="container mx-auto px-6 py-8">

@@ -17,14 +17,13 @@ import AnalysisRoutes from "./routes/analysis.routes";
 const app: Application = express();
 const PORT = 5001;
 
-
-app.use(cors(CORS_OPTIONS)); 
-app.use(morgan("dev")); 
+app.use(cors(CORS_OPTIONS));
+app.use(morgan("dev"));
 app.use(express.json());
 
 connectToDatabase();
 
-app.get("/", (_req: Request, res: Response) => {
+app.get("/api/v1", (_req: Request, res: Response) => {
   res.send("Signalyze TypeScript API is running 🚀");
 });
 
