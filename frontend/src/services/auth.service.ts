@@ -61,8 +61,8 @@ export const loginUser = async (
     const response = await api.post<AuthResponseType>("/auth/login", userData);
 
     if (response.data.user) {
-      console.log(response.data.user.token);
-      setToken(response.data.user.token);
+      // // setToken(response.data.user.token);
+      // console.log(response.data.user.token, "tokennnnnnnn");
     }
 
     return response.data;

@@ -10,18 +10,20 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import LoadingButton from "../ui/LoadingButton";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginUserType>({
     email: "",
     password: "",
   });
+
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const router = useRouter();
   const { addToast } = useToast();
-
+  const { login } = useAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (emailError) {
@@ -33,12 +35,8 @@ const Login = () => {
       const response: AuthResponseType = await loginUser(formData);
 
       if (response.success) {
-        addToast({
-          message: "Login successful! Welcome back.",
-          severity: "success",
-          position: "top-right",
-        });
-        router.push("/");
+        console.log("response", response.user.token);
+        login(response.user.token);
       }
     } catch (err: unknown) {
       const errorMessage =
